@@ -101,7 +101,6 @@ const
   ThisSeed       : Cardinal = 0;
 
   NoPlayerRecord : Boolean = False;
-  NoScoreRecord  : Boolean = False;
 
   GodMode      : Boolean = False;
 

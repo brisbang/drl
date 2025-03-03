@@ -3,15 +3,13 @@ unit dfhof;
 interface
 uses Classes, DOM, vnode, vxml, vxmldata, dfdata, vuitypes;
 
-const MaxHofEntries = 500;
-      MaxID         = 1023;
-
 //     CRC_PRIME_099 = 62189;
      
 const PlayerFile = 'player.wad';
       ScoreFile  = 'score.wad';
       RANKEXP    = 1;
       RANKSKILL  = 2;
+      MAXSCORES = 0;
 
 
 const RankArray : array[1..2] of AnsiString = ('exp_ranks','skill_ranks');
@@ -26,7 +24,6 @@ type THOF = object
   procedure Add( const Name : AnsiString; aScore : LongInt; const aKillerID : AnsiString; Level, DLev : Word; nChal : AnsiString );
   function RankCheck( out aResult : THOFRank ) : Boolean;
   function GetPagedPlayerReport : TPagedReport;
-  function GetPagedScoreReport : TPagedReport;
   procedure Done;
 
   function GetCount( aXPathQuery : string; aContext : TDOMNode = nil ) : DWord;
@@ -595,109 +592,12 @@ begin
   end;
 end;
 
-function THOF.GetPagedScoreReport : TPagedReport;
-var iChals     : TIntHashMap;
-    iCCount    : DWord;
-    iPages     : array[0..99] of TStringGArray;
-    iCount     : DWord;
-    iAmount    : DWord;
-    iElement   : TScoreEntry;
-    iChal      : Ansistring;
-    iChalIdx   : DWord;
-    iDiff      : DWord;
-
-    iScore     : DWord;
-    iLevel     : DWord;
-    iDlev      : DWord;
-    iString    : AnsiString;
-    iName      : AnsiString;
-    iKill      : AnsiString;
-    iColor     : AnsiString;
-    iHeader    : AnsiString;
-    iKlassChar : Char;
-
-  procedure Push( aIndex : DWord; aString : AnsiString );
-  begin
-    if iPages[ aIndex ] = nil then iPages[ aIndex ] := TStringGArray.Create;
-    iPages[ aIndex ].Push( aString );
-  end;
-
-begin
-  FillChar( iPages, Sizeof( iPages ), 0 );
-  iChals := TIntHashMap.Create;
-  if LuaSystem.Defined(['chal','__counter']) then
-  begin
-    iCCount := LuaSystem.Get(['chal','__counter']);
-    for iCount := 1 to iCCount do
-      iChals[ LuaSystem.Get(['chal',iCount,'abbr']) ] := iCount;
-  end;
-
-  iAmount := FScore.Entries;
-  for iCount := 1 to iAmount do
-  begin
-    iElement := FScore[ iCount ];
-    iDiff    := StrToInt( iElement.GetAttribute('difficulty') );
-    iChal    := iElement.GetAttribute('challenge');
-    iChalIDX := 0;
-    if iChal <> '' then
-    begin
-      iChalIDX := iChals.Get( iChal, 0 );
-      if iChalIDX = 0 then Continue;
-    end;
-
-    iScore := math.Max( StrToInt( iElement.GetAttribute('score') ), 0 );
-    iLevel := StrToInt( iElement.GetAttribute('level') );
-    iDLev  := StrToInt( iElement.GetAttribute('depth') );
-    iName  := iElement.GetAttribute('name');
-    iKill  := iElement.GetAttribute('killed');
-
-    if iCount = FScore.LastEntry then
-      iColor := '{L'
-    else
-      iColor := '{!';
-
-    iString := LuaSystem.Get(['diff',iDiff,'code']) + ' ';
-    iString += iColor + Padded(IntToStr(iScore),8);
-    iString += Padded(iName,17) + ' ';
-
-    iKlassChar := 'C';
-    if iElement.hasAttribute('klass') then iKlassChar := LuaSystem.Get(['klasses',AnsiString(iElement.GetAttribute('klass')),'char']);
-
-    iString += iKlassChar + '{L'+Padded(IntToStr(iLevel),3)+'}';
-    iString += Padded(iKill,34);
-    iString += 'L{L'+Padded(IntToStr(iDLev),4)+'}';
-//    if iChal <> '' then iString += iChal;
-    iString += '}';
-
-    if iChalIDX = 0 then
-    begin
-      Push( 0, iString );
-      if iDiff <> 0 then
-        Push( iDiff, iString );
-    end
-    else Push( iChalIDX + 10, iString );
-  end;
-
-  iHeader := '';
-  Result := TPagedReport.Create( 'Hall of fame', True );
-  if iPages[0] <> nil
-    then Result.Add( iPages[0], '', iHeader )
-    else Result.Add( '', iHeader );
-  for iCount := 1 to 9 do
-    if iPages[iCount] <> nil then
-      Result.Add( iPages[iCount], LuaSystem.Get(['diff',iCount,'code']), iHeader );
-  for iCount := 10 to 99 do
-    if iPages[iCount] <> nil then
-      Result.Add( iPages[iCount], LuaSystem.Get(['chal',iCount - 10,'abbr']), iHeader );
-  FreeAndNil( iChals );
-end;
-
 procedure THOF.Init;
 begin
   SkillRank := 0;
   ExpRank   := 0;
 
-  FScore := TScoreFile.Create( ScorePath + ScoreFile, MaxHOFEntries );
+  FScore := TScoreFile.Create( ScorePath + ScoreFile, MaxScores);
   FScore.SetCRC( '344ef'+{ModuleID+}'3321', '738af'+{ModuleID+}'92-5' );
   FScore.SetBackup(  ScorePath+'backup'+PathDelim, Option_ScoreBackups );
   FScore.Lock;
@@ -889,31 +789,6 @@ begin
     end;
   end;
 
-  if not NoScoreRecord then
-  begin
-    VS := LuaSystem.ProtectedCall([CoreModuleID,'GetResultDescription'],[iGameResultID,true]);
-
-    FScore.Lock;
-    try
-      FScore.Load;
-      iScoreEntry := FScore.Add( aScore );
-      if iScoreEntry <> nil then
-      begin
-        //Score.Add(Name,aScore,Level,DLev,Doom.Difficulty,VS,VSS,LuaSystem.Get(['klasses',Player.Klass,'id']));
-        iScoreEntry.SetAttribute('name', Name );
-        iScoreEntry.SetAttribute('level', IntToStr(Level) );
-        iScoreEntry.SetAttribute('depth', IntToStr(DLev) );
-        iScoreEntry.SetAttribute('klass', LuaSystem.Get(['klasses',Player.Klass,'id']) );
-        iScoreEntry.SetAttribute('killed', VS );
-        iScoreEntry.SetAttribute('difficulty', IntToStr(Doom.Difficulty) );
-        if nChal <> '' then
-          iScoreEntry.SetAttribute('challenge', LuaSystem.Get(['chal',nChal,'abbr']) );
-        FScore.Save;
-      end;
-    finally
-      FScore.Unlock;
-    end;
-  end;
   Save;
 end;
 

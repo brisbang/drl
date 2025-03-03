@@ -237,7 +237,6 @@ const
   TextNewGame       = '{b-----} New game {b-----}';
   TextChallengeGame = '{b--} Challenge game {b--}';
   TextJHC           = '{B==} Wishlist JHC! {B===}';
-  TextShowHighscore = '{b-} Show highscores {b--}';
   TextShowPlayer    = '{b---} Show player {b----}';
   TextExit          = '{b------} Exit {b--------}';
   TextHelp          = '{b------} Help {b--------}';
@@ -277,7 +276,6 @@ begin
       ReloadArrays;
       FMode := MAINMENU_CTYPE;
     end;
-    if VTIG_Selectable( TextShowHighscore ) then IO.PushLayer( TPagedView.Create( HOF.GetPagedScoreReport ) );
     if VTIG_Selectable( TextShowPlayer )    then IO.PushLayer( TPagedView.Create( HOF.GetPagedPlayerReport ) );
     if VTIG_Selectable( TextHelp )          then IO.PushLayer( THelpView.Create );
     if VTIG_Selectable( TextSettings )      then IO.PushLayer( TSettingsView.Create );

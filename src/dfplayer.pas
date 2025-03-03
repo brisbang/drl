@@ -642,24 +642,10 @@ begin
   MemorialWritten := True;
   if FScore = -1000 then Exit;
 
-  FScore += Max(FExp + (CurrentLevel * 1000) + Max(FHP,0) * 20,0);
-  if FScore < 0 then FScore := 0;
-  if GodMode   then FScore := 0;
-  if Doom.Difficulty = DIFF_NIGHTMARE then FScore -= FStatistics.GameTime div 500;
-
-  if Doom.GameWon then FScore += FScore div 4;
-
   FStatistics.Update;
-
-  FScore := Round( FScore * Double(LuaSystem.Get([ 'diff', Doom.Difficulty, 'scorefactor' ])) );
 
   Doom.CallHook(Hook_OnMortem,[ not NoPlayerRecord ]);
   LuaSystem.ProtectedCall([CoreModuleID,'RunAwards'],[NoPlayerRecord]);
-
-  // FScore
-  ScoreCRC(FScore);
-
-  HOF.Add(Name,FScore,FKilledBy,FExpLevel,CurrentLevel,Doom.Challenge);
 
   if Assigned( MortemData ) then
   begin

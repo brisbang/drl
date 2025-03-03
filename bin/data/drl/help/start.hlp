@@ -12,7 +12,6 @@ more challenges will be made available to you.
 {YCustom game} brings up a selection screen where you can view and load
 modules. Modules are player-created levels, episodes, or entirely new games
 that bring a completely new experience to the DRL engine.
-{YShow highscores} displays the highscore list, not surprisingly.
 {YShow player} displays your player statistics, which include your player 
 rank, number of kills, and number of wins. It has several screens which
 can be scrolled with the arrow keys.
@@ -201,12 +200,11 @@ information is written there. First, there are your main parameters:
 movement, firing, and reloading speeds, as well as your chance to hit with
 the weapon you currently have equipped (from point blank range). Next are
 the more passive statistics: your player and dungeon level, amount of
-played turns, and your score so far. At the bottom you can find parameters
-of equipment that you are currently wearing: damage, firing and reloading
-speeds, and accuracy for weapons; and protection value, durability, and
-movement and knockback modifiers for armor and boots (yes, armor and boots
-can affect your movement speed and chance to be knocked back by powerful
-attacks).
+played turns. At the bottom you can find parameters of equipment that you
+are currently wearing: damage, firing and reloading speeds, and accuracy
+for weapons; and protection value, durability, and movement and knockback
+modifiers for armor and boots (yes, armor and boots can affect your
+movement speed and chance to be knocked back by powerful attacks).
 
 There are five types of items in this game:
 

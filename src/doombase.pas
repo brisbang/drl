@@ -333,7 +333,6 @@ begin
   if aResult.Module <> nil then
   begin
     NoPlayerRecord := True;
-    NoScoreRecord  := True;
     Module := aResult.Module;
   end;
   }
@@ -1015,7 +1014,6 @@ repeat
   SChallenge     := '';
   GameWon        := False;
   NoPlayerRecord := False;
-  NoScoreRecord  := False;
 
   IO.ClearAllMessages;
 
@@ -1215,10 +1213,6 @@ repeat
       IO.PushLayer( TPagedView.Create( iReport ) );
       IO.WaitForLayer( True );
     end;
-    iChalAbbr := '';
-    if Challenge <> '' then iChalAbbr := LuaSystem.Get(['chal',Challenge,'abbr']);
-    IO.PushLayer( TPagedView.Create( HOF.GetPagedScoreReport, iChalAbbr ) );
-    IO.WaitForLayer( True );
   end;
   CallHook(Hook_OnUnLoad,[]);
 
