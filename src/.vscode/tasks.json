@@ -21,11 +21,34 @@
             ]
         },
         {
+            "label": "Build all (debug)",
+            "group": {
+                "kind": "build",
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean Build Folders",
+                "Build makewad.exe (debug)",
+                "Build common (debug)"
+            ]
+        },
+        {
+            "label": "Build common (debug)",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Build drl.exe (debug)",
+                "Build drl.wad, core.wad"
+            ]
+        },
+        {
             "label": "Build drl.exe (debug)",
             "type": "shell",
             "group": {
                 "kind": "build",
-                "isDefault": true
             },
             "command": "${config:fpcPath}",
             "args": [ //This command definition matches the Lazarus drl.lpi build execution

@@ -413,7 +413,7 @@ begin
      if (BF_GUNRUNNER in Self.FFlags) and iWeapon.canFire and (iWeapon.Shots < 3) and FAffects.IsActive( LuaSystem.Defines['running'] ) then
      begin
        iAutoTarget := TAutoTarget.Create( FPosition );
-       TLevel(Parent).UpdateAutoTarget( iAutoTarget, Self, Player.Vision );
+       TLevel(Parent).UpdateAutoTarget( iAutoTarget, Self, Player.Vision + 4);
        with iAutoTarget do
        try
          FTargetPos := Current;

@@ -130,13 +130,13 @@ end;
 procedure TTargeting.Update( aRange : Integer );
 var iBeing : TBeing;
 begin
-  Doom.Level.UpdateAutoTarget( FList, Player, aRange );
+  Doom.Level.UpdateAutoTarget( FList, Player, aRange + 4);
   if (FLastUID <> 0) and Doom.Level.isAlive( FLastUID ) then
   begin
     iBeing := Doom.Level.FindChild( FLastUID ) as TBeing;
     if iBeing <> nil then
-      if iBeing.isVisible then
-        if Distance( iBeing.Position, Player.Position ) <= aRange then
+      if iBeing.isVisible or Doom.Level.BeingIntuited(iBeing.Position, iBeing) or Doom.Level.BeingExplored(iBeing.Position, iBeing) then
+        if Distance( iBeing.Position, Player.Position ) <= aRange + 4 then
           FList.PriorityTarget( iBeing.Position );
   end;
 
@@ -352,6 +352,8 @@ begin
   if GraphicsVersion then
     (IO as TDoomGFXIO).UpdateMinimap;
   Player.PreAction;
+
+
   FTargeting.Update( Player.Vision );
   IO.SetAutoTarget( FTargeting.List.Current );
   if ( FPlayerView <> nil ) and (not FDamagedLastTurn) and (Player.EnemiesInVision < 1) then
