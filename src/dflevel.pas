@@ -918,7 +918,8 @@ begin
         end;
         if (aContent <> 0) and isEmpty( a, [ EF_NOITEMS, EF_NOSTAIRS, EF_NOBLOCK, EF_NOHARM ] ) then
         begin
-          if (iDamage > 20) or ((efRandomContent in aFlags) and (Random(2) = 1)) then
+        //Something here about CF_NOCHANGE... kind of hard because CF isn't part of the pascal layer but explosions are.
+          if ((iDamage > 20) or ((efRandomContent in aFlags) and (Random(2) = 1))) then
             Cell[a] := aContent;
         end;
       end;
