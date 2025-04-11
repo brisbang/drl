@@ -343,6 +343,7 @@ const ExpTable : array[1..MaxPlayerLevel] of LongInt =
                
 function Roll(stat : Integer) : Integer;
 function ApplyMul( aBase, aMul : Integer ) : Integer;
+function ApplyMulf( aBase : Single; aMul : Integer ) : Single;
 function InputDirection( aInput : TInputKey ) : TDirection;
 function DirectionToInput(Dir : TDirection) : TInputKey;
 function TwoInt(x : integer) : string;
@@ -705,6 +706,12 @@ function ApplyMul( aBase, aMul : Integer ) : Integer;
 begin
   if aMul = 0 then Exit( aBase );
   Result := Round( ( ( 100 + aMul ) / 100.0 ) * aBase );
+end;
+
+function ApplyMulf( aBase : Single; aMul : Integer) : Single;
+begin
+  if aMul = 0 then Exit( aBase );
+  Result := ( ( 100 + aMul ) / 100.0 ) * aBase;
 end;
 
 { TStringList }

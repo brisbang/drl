@@ -72,7 +72,10 @@ TBeing = class(TThing,IPathQuery)
     procedure BloodFloor;
     procedure Knockback( dir : TDirection; Strength : Integer );
     destructor Destroy; override;
-    function rollMeleeDamage( aSlot : TEqSlot = efWeapon ) : Integer;
+    function rollMeleeDamage( aSlot : TEqSlot = efWeapon; aCalcAverage : Boolean = false ) : Single;
+    function rollRangedDamage( aItem : TItem; aDamageMod, aDamageMult : Integer; aCalcAverage : Boolean = false) : Single;
+    function averageShotgunDamage( aShotGun : TItem ) : Single;
+    function getShotgunDamage( aShotGun : TItem ) : TDiceRoll;
     function getMoveCost : LongInt;
     function getFireCost( aAltFire : TAltFire = ALT_NONE ) : LongInt;
     function getReloadCost : LongInt;
@@ -398,6 +401,25 @@ begin
   Exit( FInv.SeekAmmo( Weapon.AmmoID ) );
 end;
 
+function TBeing.AverageShotgunDamage( aShotGun : TItem ) : Single;
+var iDamage : TDiceRoll;
+begin
+  Assert( aShotGun <> nil );
+  Assert( aShotGun.Flags[ IF_SHOTGUN ] );
+  iDamage := GetShotgunDamage( aShotGun );
+  Exit( iDamage.Avg );
+end;
+
+function TBeing.GetShotgunDamage( aShotGun : TItem ) : TDiceRoll;
+var iDamage   : TDiceRoll;
+begin
+  Assert( aShotGun <> nil );
+  Assert( aShotGun.Flags[ IF_SHOTGUN ] );
+  iDamage.Init( aShotGun.Damage_Dice, aShotGun.Damage_Sides, aShotGun.Damage_Add + FBonus.ToDamAll );
+  if BF_MAXDAMAGE in FFlags then
+    iDamage.Init( 0, 0, iDamage.Max );
+end;
+
 function TBeing.HandleShotgunFire( aTarget : TCoord2D; aShotGun : TItem; aShots : DWord ) : Boolean;
 var iThisUID  : DWord;
     iDual     : Boolean;
@@ -413,8 +435,7 @@ begin
   iDual := aShotGun.Flags[ IF_DUALSHOTGUN ];
   if iDual then aShotgun.PlaySound( 'fire', FPosition );
 
-  iDamage.Init( aShotGun.Damage_Dice, aShotGun.Damage_Sides, aShotGun.Damage_Add + FBonus.ToDamAll );
-  if BF_MAXDAMAGE in FFlags then iDamage.Init( 0, 0, iDamage.Max );
+  iDamage := GetShotgunDamage(aShotGun);
 
   for iCount := 1 to aShots do
   begin
@@ -1319,6 +1340,35 @@ begin
   until AmmoItem = nil;
 end;
 
+function TBeing.CalcAverage( ) : Single
+begin
+  iDamageBonus := FBonus.ToDamAll;
+  iToHitBonus  := 0;
+  if aGun.Flags[ IF_PISTOL ] then iDamageBonus += 3 * FBonus.Pistol;
+  iShots       := Max( aGun.Shots, 1 );
+  iChaining    := ( aAlt = ALT_CHAIN ) and ( iShots > 1 );
+  iBulletDance := ( BF_BULLETDANCE in FFlags ) and aGun.Flags[ IF_PISTOL ] and ( aAlt = ALT_NONE );
+
+  // thelaptop: The problem is there's no flag for "rapid fire" weapons.  There are 3 proposals here.
+  //            Here, I explicitly verify that if the weapon fires more than one "shot" per firing action, it is a rapid fire if it's not a shotgun or pistol.
+  // Actually, another alternative would be to compare with aGun.AltFire = ALT_CHAIN
+  // 1. Original: Anything with 3 or more shots per firing action counts as "rapid shot", if 2, then it has to be not shotgun and not pistol.
+  //if (iShots > 2) or (iBulletDance) or ( ( iShots > 1 ) and ( not aGun.Flags[ IF_SHOTGUN ]  and not aGun.Flags[ IF_PISTOL ] ) ) then
+  // 2. Alt #1: 2 or more shots that are not shotguns nor pistols are considered "rapid shots".
+  //if (iBulletDance) or ( ( iShots > 1 ) and ( not aGun.Flags[ IF_SHOTGUN ] and not aGun.Flags[ IF_PISTOL ] ) ) then
+  // 3. Alt #2: Only chain-fire capable weapons are "rapid shots".
+  //if (iBulletDance) or ( aGun.AltFire = ALT_CHAIN ) then
+  if (iShots > 2) or (iBulletDance) or ( ( iShots > 1 ) and ( not aGun.Flags[ IF_SHOTGUN ]  and not aGun.Flags[ IF_PISTOL ] ) ) then
+    iShots += FBonus.Rapid;
+
+  if aGun.Flags[ IF_SHOTGUN ] then
+    iResult := averageShotgunDamage( aGun )
+  else if aGun.Flags[ IF_SPREAD ] then
+    iResult := rollRangedDamage( aGun, FBonus.ToDamAll, FBonus.MulDamage + FBonus.MulDamageRanged, True) 
+  else
+    iResult := rollRangedDamage( aGun, iShots, iDamageBonus, True );
+end;
+
 function TBeing.FireRanged( aTarget : TCoord2D; aGun : TItem; aAlt : TAltFire ) : Boolean;
 var iShots       : Integer;
     iDamageBonus : Integer;
@@ -1601,16 +1651,18 @@ begin
   iLevel.Kill( Self );
 end;
 
-function TBeing.rollMeleeDamage( aSlot : TEqSlot = efWeapon ) : Integer;
-var iDamage : Integer;
+function TBeing.RollMeleeDamage( aSlot : TEqSlot = efWeapon; aCalcAverage : Boolean = false) : Single;
+var iDamage : Single;
 begin
   iDamage := FBonus.ToDam;
   if ( Inv.Slot[ aSlot ] <> nil ) and ( Inv.Slot[ aSlot ].isMelee ) then
   begin
     if BF_MAXDAMAGE in FFlags then
-      iDamage += Inv.Slot[ aSlot ].maxDamage
+      iDamage += Single(Inv.Slot[ aSlot ].maxDamage)
+    else if aCalcAverage then
+      iDamage += Inv.Slot[ aSlot ].avgDamage
     else
-      iDamage += Inv.Slot[ aSlot ].rollDamage;
+      iDamage += Single(Inv.Slot[ aSlot ].rollDamage);
 
     if ( BF_BLADEBONUS in FFlags ) and Inv.Slot[ aSlot ].Flags[ IF_BLADE ] then
       iDamage *= 2;
@@ -1619,15 +1671,33 @@ begin
   begin
     if BF_MAXDAMAGE in FFlags then
       iDamage += 3
+    else if aCalcAverage then
+      iDamage += 2
     else
       iDamage += Byte(Dice(1,3));
   end;
 
   iDamage += FBonus.ToDamAll;
-  iDamage := ApplyMul( iDamage, FBonus.MulDamage + FBonus.MulDamageMelee );
+  iDamage := ApplyMulf( iDamage, FBonus.MulDamage + FBonus.MulDamageMelee );
 
   if iDamage < 0 then iDamage := 0;
   rollMeleeDamage := iDamage;
+end;
+
+function TBeing.RollRangedDamage( aItem : TItem; aDamageMod, aDamageMult : Integer; aCalcAverage : Boolean = false ) : Single;
+var iMaxDamage : Boolean;
+begin
+  if (BF_MAXDAMAGE in FFlags) or (( aItem.Flags[ IF_PISTOL ]) and ( BF_PISTOLMAX in FFlags ) ) then
+    rollRangedDamage := aItem.maxDamage
+  else if aCalcAverage then
+    rollRangedDamage := aItem.avgDamage
+  else
+    rollRangedDamage := aItem.rollDamage;
+
+  rollRangedDamage += aDamageMod;
+  rollRangedDamage := ApplyMulf( rollRangedDamage, aDamageMult );
+  //The destructive damage is calculated farther down the damage dealing routine. It's not applicable currently to player weapons so rather than introducing a risk, we apply this in the calculation formula as a special case.
+  if (aCalcAverage and aItem.Flags [ IF_DESTRUCTIVE ]) then rollRangedDamage *= 2;
 end;
 
 procedure TBeing.Attack( aWhere : TCoord2D );
@@ -1657,7 +1727,7 @@ begin
 
     IO.addMeleeAnimation( VisualTime( iAttackCost, 100 ), 0, FUID, Position, aWhere, Sprite );
 
-    TLevel(Parent).DamageTile( aWhere, rollMeleeDamage( iSlot ), Damage_Melee );
+    TLevel(Parent).DamageTile( aWhere, Round(rollMeleeDamage( iSlot )), Damage_Melee );
     if iWeapon <> nil then
       Dec( FSpeedCount, Integer( iWeapon.UseTime ) * Integer( FTimes.Fire ) )
     else
@@ -1739,7 +1809,7 @@ begin
   if not iMissed then
   begin
     // Damage roll
-    iDamage := rollMeleeDamage( iWeaponSlot );
+    iDamage := Round(rollMeleeDamage( iWeaponSlot ));
 
     // Hit message
     if IsPlayer then iResult := ' hit ' else iResult := ' hits ';
@@ -1998,7 +2068,6 @@ var iDirection  : TDirection;
     iHit        : Boolean;
     iLevel      : TLevel;
     iStart      : TCoord2D;
-    iMaxDamage  : Boolean;
 begin
   if aItem = nil then Exit( False );
   if not aItem.isWeapon then Exit( False );
@@ -2010,6 +2079,7 @@ begin
   iThisUID   := FUID;
   iItemUID   := aItem.uid;
   iDodged    := False;
+
   if iLevel.isProperCoord( aTarget ) then
   begin
     iBeing      := iLevel.Being[ aTarget ];
@@ -2047,15 +2117,7 @@ begin
       iSource := iTarget;
 
   iMisslePath.Init( iLevel, iSource, aTarget );
-
-  iMaxDamage := (BF_MAXDAMAGE in FFlags) or (( aItem.Flags[ IF_PISTOL ]) and ( BF_PISTOLMAX in FFlags ) );
-  if iMaxDamage then
-    iDamage := aItem.maxDamage
-  else
-    iDamage := aItem.rollDamage;
-
-  iDamage += aDamageMod;
-  iDamage := ApplyMul( iDamage, aDamageMult );
+  iDamage := Round(rollRangedDamage(aItem, aDamageMod, aDamageMult));
 
   iSteps := 0;
   iHit   := MF_EXACT in Missiles[iMissile].Flags;
@@ -2196,7 +2258,8 @@ begin
   begin
     iRoll.Init(aItem.Damage_Dice, aItem.Damage_Sides, aItem.Damage_Add + aDamageMod );
 
-    if iMaxDamage then
+    //I think there was a bug here where if you shot a barrel with a pistol, and you had Sharpshooter, you'd take max damage from the barrel explosion.
+    if BF_MAXDAMAGE in FFlags then
       iRoll.Init( 0,0, iRoll.Max );
 
     iSound := IO.Audio.ResolveSoundID([aItem.ID+'.explode',Missiles[iMissile].soundID+'.explode','explode']);

@@ -28,6 +28,7 @@ TItem  = class( TThing )
     procedure WriteToStream( Stream: TStream ); override;
 
     function    rollDamage : Integer;
+    function    avgDamage : Single;
     function    maxDamage : Integer;
     function    GetName(known : boolean) : string;
     function    GetProtection : Byte;
@@ -270,7 +271,13 @@ begin
   FRecharge.Counter := FRecharge.Delay;
 end;
 
-function    TItem.rollDamage : Integer;
+function TItem.avgDamage : Single;
+begin
+  if isWeapon then Exit(FProps.Damage.Avg);
+  raise EItemException.CreateFmt('TItem.avgDamage called for Itype %d!',[ Byte( FProps.Itype ) ] );
+end;
+
+function TItem.rollDamage : Integer;
 begin
   if isWeapon then Exit(FProps.Damage.Roll);
   raise EItemException.CreateFmt('TItem.Damage called for Itype %d!',[ Byte( FProps.Itype ) ] );
