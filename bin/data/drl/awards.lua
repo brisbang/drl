@@ -368,6 +368,7 @@ function drl.register_awards()
 		name  = "UAC Bronze Badge",
 		desc  = "Win {!standard} game on any difficulty",
 		level = 1,
+		IsPossible = function() return CHALLENGE == "" end;
 	}
 
 	register_badge "buac2"
@@ -375,6 +376,7 @@ function drl.register_awards()
 		name  = "UAC Silver Badge",
 		desc  = "Win {!standard} game on Hurt Me Plenty",
 		level = 2,
+		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_HARD end,
 	}
 
 	register_badge "buac3"
@@ -382,6 +384,7 @@ function drl.register_awards()
 		name  = "UAC Gold Badge",
 		desc  = "Win {!standard} game on Ultra-Violence",
 		level = 3,
+		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_VERYHARD end,
 	}
 
 	register_badge "buac4"
@@ -389,6 +392,7 @@ function drl.register_awards()
 		name  = "UAC Platinum Badge",
 		desc  = "Win {!standard} game on N!",
 		level = 4,
+		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE end,
 	}
 
 	register_badge "buac5"
@@ -396,6 +400,7 @@ function drl.register_awards()
 		name  = "UAC Diamond Badge",
 		desc  = "Win {!standard} N! game under 20 min",
 		level = 5,
+		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE and statistics.real_time <= 20*60 end,
 	}
 
 	register_badge "buac6"
@@ -403,6 +408,7 @@ function drl.register_awards()
 		name  = "UAC Angelic Badge",
 		desc  = "Win {!standard} N! damageless",
 		level = 6,
+		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE and statistics.damage_taken == 0 end,
 	}
 
 -- VETERAN
@@ -412,6 +418,7 @@ function drl.register_awards()
 		name  = "Veteran Bronze Badge",
 		desc  = "Win game on any difficulty w/100% kills",
 		level = 1,
+		IsPossible = function() return statistics.levels_incomplete == 0 end,
 	}
 
 	register_badge "veteran2"
@@ -419,6 +426,7 @@ function drl.register_awards()
 		name  = "Veteran Silver Badge",
 		desc  = "Win game on Hurt Me Plenty w/100% kills",
 		level = 2,
+		IsPossible = function() return DIFFICULTY >= DIFF_HARD and (statistics.levels_incomplete == 0) end,
 	}
 
 	register_badge "veteran3"
@@ -426,6 +434,7 @@ function drl.register_awards()
 		name  = "Veteran Gold Badge",
 		desc  = "Win game on UV/100% kills",
 		level = 3,
+		IsPossible = function() return DIFFICULTY >= DIFF_VERYHARD and (statistics.levels_incomplete == 0) end,
 	}
 
 	register_badge "veteran4"
@@ -433,6 +442,7 @@ function drl.register_awards()
 		name  = "Veteran Platinum Badge",
 		desc  = "Fully win the game on UV",
 		level = 4,
+		IsPossible = function() return DIFFICULTY >= DIFF_VERYHARD end,
 	}
 
 	register_badge "veteran5"
@@ -440,6 +450,7 @@ function drl.register_awards()
 		name  = "Veteran Diamond Badge",
 		desc  = "Fully win the game on N!",
 		level = 5,
+		IsPossible = function() return DIFFICULTY >= DIFF_NIGHTMARE end,
 	}
 
 	register_badge "veteran6"
@@ -447,6 +458,7 @@ function drl.register_awards()
 		name  = "Veteran Angelic Badge",
 		desc  = "Fully win on N!/100%",
 		level = 6,
+		IsPossible = function() return DIFFICULTY >= DIFF_NIGHTMARE and (statistics.levels_incomplete == 0) end,
 	}
 
 -- STRONGMAN

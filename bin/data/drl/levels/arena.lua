@@ -57,6 +57,7 @@ register_level "hells_arena"
 			name  = "Arena Bronze Badge",
 			desc  = "Complete Hell's Arena",
 			level = 1,
+			IsPossible = function() return CHALLENGE ~= "challenge_a100" and (player.depth <= 2 or level.id == "hells_arena") end,
 		}
 
 		register_badge "arena2"
@@ -64,6 +65,7 @@ register_level "hells_arena"
 			name  = "Arena Silver Badge",
 			desc  = "Complete Hell's Arena on UV",
 			level = 2,
+			IsPossible = function() return DIFFICULTY == DIFF_VERYHARD and CHALLENGE ~= "challenge_a100" and (player.depth <= 2 or level.id == "hells_arena") end,
 		}
 
 		register_badge "arena3"
@@ -71,6 +73,7 @@ register_level "hells_arena"
 			name  = "Arena Gold Badge",
 			desc  = "Complete Hell's Arena on AoMr on UV",
 			level = 3,
+			IsPossible = function() return DIFFICULTY == DIFF_VERYHARD and CHALLENGE == "challenge_aomr" and (player.depth <= 2 or level.id == "hells_arena") end,
 		}
 
 		register_badge "arena4"
@@ -78,6 +81,7 @@ register_level "hells_arena"
 			name  = "Arena Platinum Badge",
 			desc  = "Complete Hell's Arena on Nightmare!",
 			level = 4,
+			IsPossible = function() return DIFFICULTY == DIFF_NIGHTMARE and (player.depth <= 2 or level.id == "hells_arena") end,
 		}
 
 		register_badge"arena5"
@@ -85,6 +89,7 @@ register_level "hells_arena"
 			name  = "Arena Diamond Badge",
 			desc  = "Complete Hell's Arena on AoB on N!",
 			level = 5,
+			IsPossible = function() return DIFFICULTY == DIFF_NIGHTMARE and CHALLENGE == "challenge_aob" and (player.depth <= 2 or level.id == "hells_arena") end,
 		}
 	end,
 

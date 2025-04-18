@@ -594,6 +594,8 @@ procedure TLevel.Leave;
 var TimeDiff : LongInt;
 begin
   CallHook(Hook_OnExit,[Player.CurrentLevel,FID, FStatus]);
+  if EnemiesLeft() > 0 then Player.IncStatistic('levels_incomplete');
+
   if LF_BONUS in FFlags then
     if Hook_OnCompletedCheck in FHooks then
     begin

@@ -690,7 +690,7 @@ begin
    begin
      Exit(Boolean(LuaSystem.ProtectedCall( [ 'badges', aBadgeId, HookNames[Hook_IsPossible] ], aParams )));
    end;
-   Exit(true);
+   Exit(false);
 end;
 
 procedure TPlayerView.PushItem( aItem : TItem; aArray : TItemViewArray );
