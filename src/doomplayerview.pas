@@ -3,13 +3,19 @@ unit doomplayerview;
 interface
 uses viotypes, vgenerics,
      dfitem, dfdata,
-     doomio, doomtrait, doomconfirmview;
+     doomio, doomtrait, doomconfirmview, dfhof;
 
 type TPlayerViewState = (
   PLAYERVIEW_INVENTORY,
   PLAYERVIEW_EQUIPMENT,
   PLAYERVIEW_CHARACTER,
   PLAYERVIEW_TRAITS,
+  PLAYERVIEW_ACHIEVEMENTS_BRONZE,
+  PLAYERVIEW_ACHIEVEMENTS_SILVER,
+  PLAYERVIEW_ACHIEVEMENTS_GOLD,
+  PLAYERVIEW_ACHIEVEMENTS_PLATINUM,
+  PLAYERVIEW_ACHIEVEMENTS_DIAMOND,
+  PLAYERVIEW_ACHIEVEMENTS_ANGELIC,
   PLAYERVIEW_CLOSING,
   PLAYERVIEW_PENDING,
   PLAYERVIEW_DONE
@@ -53,6 +59,7 @@ protected
   procedure Initialize;
   procedure UpdateInventory;
   procedure UpdateEquipment;
+  procedure ShowBadgePage( aPage : LongInt );
   procedure UpdateCharacter;
   procedure UpdateTraits;
   procedure PushItem( aItem : TItem; aArray : TItemViewArray );
@@ -63,6 +70,8 @@ protected
   procedure ReadQuickslots;
   procedure InitSwapMode( aSlot : TEqSlot );
   procedure Sort( aList : TItemViewArray );
+private
+  procedure ShowBadgesForPage( aPage : LongInt );
 protected
   procedure Filter( aSet : TItemTypeSet );
 protected
@@ -181,10 +190,16 @@ begin
   end;
 
   case FState of
-    PLAYERVIEW_INVENTORY : UpdateInventory;
-    PLAYERVIEW_EQUIPMENT : UpdateEquipment;
-    PLAYERVIEW_CHARACTER : UpdateCharacter;
-    PLAYERVIEW_TRAITS    : UpdateTraits;
+    PLAYERVIEW_INVENTORY             : UpdateInventory;
+    PLAYERVIEW_EQUIPMENT             : UpdateEquipment;
+    PLAYERVIEW_CHARACTER             : UpdateCharacter;
+    PLAYERVIEW_TRAITS                : UpdateTraits;
+    PLAYERVIEW_ACHIEVEMENTS_BRONZE   : ShowBadgePage(1);
+    PLAYERVIEW_ACHIEVEMENTS_SILVER   : ShowBadgePage(2);
+    PLAYERVIEW_ACHIEVEMENTS_GOLD     : ShowBadgePage(3);
+    PLAYERVIEW_ACHIEVEMENTS_PLATINUM : ShowBadgePage(4);
+    PLAYERVIEW_ACHIEVEMENTS_DIAMOND  : ShowBadgePage(5);
+    PLAYERVIEW_ACHIEVEMENTS_ANGELIC  : ShowBadgePage(6);
   end;
 
   if (( Doom.State <> DSPlaying ) and ( not iTraitFirst )) or IsFinished or (FState = PLAYERVIEW_CLOSING) or (FState = PLAYERVIEW_PENDING) then Exit;
@@ -193,13 +208,19 @@ begin
   begin
     if VTIG_Event( VTIG_IE_LEFT ) then
     begin
-      if FState = Low( TPlayerViewState ) then FState := PLAYERVIEW_TRAITS       else FState := Pred( FState );
+      if FState = Low( TPlayerViewState ) then 
+      begin
+        if HOF.ShowAngelicBadges() then FState := PLAYERVIEW_ACHIEVEMENTS_ANGELIC else FState := PLAYERVIEW_ACHIEVEMENTS_DIAMOND;
+      end
+      else FState := Pred( FState );
     end;
     if VTIG_Event( VTIG_IE_RIGHT ) then
     begin
-      if FState = PLAYERVIEW_TRAITS       then FState := Low( TPlayerViewState ) else FState := Succ( FState );
+      if (FState = PLAYERVIEW_ACHIEVEMENTS_ANGELIC) or ((FState = PLAYERVIEW_ACHIEVEMENTS_DIAMOND) and not HOF.ShowAngelicBadges())
+        then FState := Low( TPlayerViewState )
+        else FState := Succ( FState );
     end;
-    if ( FState <> PLAYERVIEW_DONE ) and VTIG_Event( [ TIG_EV_INVENTORY, TIG_EV_EQUIPMENT, TIG_EV_CHARACTER, TIG_EV_TRAITS ] ) then
+    if ( FState <> PLAYERVIEW_DONE ) and VTIG_Event( [ TIG_EV_INVENTORY, TIG_EV_EQUIPMENT, TIG_EV_CHARACTER, TIG_EV_TRAITS, TIG_EV_ACHIEVEMENTS ] ) then
     begin
       FState := PLAYERVIEW_DONE;
     end;
@@ -558,6 +579,9 @@ end;
 procedure TPlayerView.UpdateTraits;
 var iSelected : Integer;
     iEntry    : TTraitViewEntry;
+
+
+
 begin
   if FTraits = nil then ReadTraits( Player.Klass );
   if FTraitMode
@@ -606,6 +630,49 @@ begin
         else Player.FTraits.Upgrade( FTraits[iSelected].Index );
       FState := PLAYERVIEW_DONE;
     end;
+end;
+
+procedure TPlayerView.ShowBadgePage( aPage : Integer );
+var
+    iMaxPages : Integer;
+begin
+  if FEq = nil then ReadEq;
+  if HOF.ShowAngelicBadges() then iMaxPages := 6 else iMaxPages := 5;
+  Assert(aPage > 0);
+  Assert(aPage <= iMaxPages);
+  VTIG_BeginWindow('Achievements', 'achievements', FSize );
+  VTIG_TEXT( 'Page {0}', [ aPage ] );
+  FRect := VTIG_GetWindowRect;
+  ShowBadgesForPage(aPage);
+  VTIG_End('{l<{!Left,Right}> panels, <{!Escape}> exit}');
+end;
+
+procedure TPlayerView.ShowBadgesForPage( aPage : Integer );
+var
+    iBadges   : LongInt;
+    cn        : LongInt;
+    iString   : AnsiString;
+begin
+  if LuaSystem.Defined(['badges','__counter']) then
+  begin
+    iBadges := LuaSystem.Get(['badges','__counter']);
+    for cn := 1 to iBadges do
+    with LuaSystem.GetTable(['badges',cn]) do
+    try
+      if getInteger('level') = aPage then
+      begin
+        if HOF.GetCounted( 'badges', 'badge', getString('id') ) > 0 then
+        begin
+          iString := ' {!'+getString('name');
+        end
+        else
+          iString := ' {d'+getString('name');
+        VTIG_Text( Padded(iString,31) + '}{l -- ' + getString('desc') + '}' );
+      end;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 procedure TPlayerView.PushItem( aItem : TItem; aArray : TItemViewArray );

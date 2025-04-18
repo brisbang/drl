@@ -34,6 +34,7 @@ type THOF = object
 
   function AddCounted( const aRootID, aLeafID, aElementID : AnsiString; aAmount : DWord = 1 ) : Boolean;
   function GetCounted( const aRootID, aLeafID, aElementID : AnsiString ) : DWord;
+  function ShowAngelicBadges() : Boolean;  //Is the player ready to see the Angelic challenges based on their progress?
 private
   FScore      : TScoreFile;
   FPlayerInfo : TVXMLDataFile;
@@ -529,12 +530,10 @@ begin
   end;
 
   // ---------------------------------------------------------------------------
-
   if LuaSystem.Defined(['badges','__counter']) then
   begin
     iBadges := LuaSystem.Get(['badges','__counter']);
-    iPages  := 5;
-    if (GetBadgeCount(6) >= 1) or (GetBadgeCount(5) >= 1) then iPages := 6;
+    if (ShowAngelicBadges()) then iPages := 6 else iPages := 5;
     for cn2 := 1 to iPages do
     begin
       iPage := TStringGArray.Create;
@@ -593,6 +592,12 @@ begin
         else iPage.Push('   {dTo achieve {L'+LuaSystem.Get(['awards',cn,'levels',iTotal+1,'name'])+'} level you need to: {l'+LuaSystem.Get(['awards',cn,'levels',iTotal+1,'desc'] )+'}');
     end;
   end;
+end;
+
+function THOF.ShowAngelicBadges : Boolean;
+begin
+    if (GetBadgeCount(6) >= 1) or (GetBadgeCount(5) >= 1) then Exit(true);
+    Exit(false);
 end;
 
 function THOF.GetPagedScoreReport : TPagedReport;

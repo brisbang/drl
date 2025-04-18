@@ -6,22 +6,23 @@ uses {$IFDEF WINDOWS}Windows,{$ENDIF} Classes, SysUtils,
      vuitypes, vluastate,  viotypes, vioevent, vioconsole, vuielement, vgenerics, vutil,
      dfdata, doomspritemap, doomaudio, doomkeybindings, doomloadingview;
 
-const TIG_EV_NONE      = 0;
-      TIG_EV_DROP      = 1;
-      TIG_EV_INVENTORY = 2;
-      TIG_EV_EQUIPMENT = 3;
-      TIG_EV_CHARACTER = 4;
-      TIG_EV_TRAITS    = 5;
-      TIG_EV_QUICK_0   = 10;
-      TIG_EV_QUICK_1   = 11;
-      TIG_EV_QUICK_2   = 12;
-      TIG_EV_QUICK_3   = 13;
-      TIG_EV_QUICK_4   = 14;
-      TIG_EV_QUICK_5   = 15;
-      TIG_EV_QUICK_6   = 16;
-      TIG_EV_QUICK_7   = 17;
-      TIG_EV_QUICK_8   = 18;
-      TIG_EV_QUICK_9   = 19;
+const TIG_EV_NONE         = 0;
+      TIG_EV_DROP         = 1;
+      TIG_EV_INVENTORY    = 2;
+      TIG_EV_EQUIPMENT    = 3;
+      TIG_EV_CHARACTER    = 4;
+      TIG_EV_TRAITS       = 5;
+      TIG_EV_ACHIEVEMENTS = 6;
+      TIG_EV_QUICK_0      = 10;
+      TIG_EV_QUICK_1      = 11;
+      TIG_EV_QUICK_2      = 12;
+      TIG_EV_QUICK_3      = 13;
+      TIG_EV_QUICK_4      = 14;
+      TIG_EV_QUICK_5      = 15;
+      TIG_EV_QUICK_6      = 16;
+      TIG_EV_QUICK_7      = 17;
+      TIG_EV_QUICK_8      = 18;
+      TIG_EV_QUICK_9      = 19;
 
 type TCommandSet = set of Byte;
      TKeySet     = set of Byte;
