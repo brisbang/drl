@@ -641,10 +641,11 @@ begin
   Assert(aPage > 0);
   Assert(aPage <= iMaxPages);
   VTIG_BeginWindow('Achievements - '+HOF.GetColourForBadgePage(aPage), 'achievements', FSize );
-//  VTIG_TEXT( 'Page {0}', [ aPage ] );
-  FRect := VTIG_GetWindowRect;
   ShowBadgesForPage(aPage);
-  VTIG_End('{l<{!Left,Right}> panels, <{!Escape}> exit}');
+  VTIG_Scrollbar;
+  FRect := VTIG_GetWindowRect;
+  VTIG_End('{l<{!Up},{!Down}> scroll, {l<{!Left,Right}> panels, <{!Escape}> exit}');
+  IO.RenderUIBackground( FRect.TopLeft, FRect.BottomRight - PointUnit );
 end;
 
 procedure TPlayerView.ShowBadgesForPage( aPage : Integer );
