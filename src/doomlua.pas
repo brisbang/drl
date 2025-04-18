@@ -202,6 +202,29 @@ begin
   Result := 0;
 end;
 
+function lua_core_register_badge(L: Plua_State): Integer; cdecl;
+var State : TDoomLuaState;
+    mID : Integer;
+begin
+  State.Init(L);
+  if High(Badges) = -1 then SetLength(Badges,MAXBADGE);
+  mID := State.ToInteger(1);
+  if mID > High(Badges) then
+    raise Exception.Create('Maximum number of registered badges reached!');
+  with Badges[mID] do
+  with LuaSystem.GetTable(['badges',mID]) do
+  try
+    Name       := getString('name');
+    Desc       := getString('desc');
+    Level      := getInteger('level');
+    Hooks      := [];
+    if isFunction('IsPossible') then Include(Hooks, BadgeHookIsPossible);
+  finally
+    Free;
+  end;
+  Result := 0;
+end;
+
 function lua_core_add_to_cell_set(L: Plua_State): Integer; cdecl;
 var State : TDoomLuaState;
 begin
@@ -457,7 +480,7 @@ const lua_player_data_lib : array[0..4] of luaL_Reg = (
 );
 
 
-const lua_core_lib : array[0..11] of luaL_Reg = (
+const lua_core_lib : array[0..12] of luaL_Reg = (
     ( name : 'add_to_cell_set';func : @lua_core_add_to_cell_set),
     ( name : 'game_time';func : @lua_core_game_time),
     ( name : 'is_playing';func : @lua_core_is_playing),
@@ -465,6 +488,7 @@ const lua_core_lib : array[0..11] of luaL_Reg = (
     ( name : 'register_missile';func : @lua_core_register_missile),
     ( name : 'register_shotgun';func : @lua_core_register_shotgun),
     ( name : 'register_affect'; func : @lua_core_register_affect),
+    ( name : 'register_badge';  func : @lua_core_register_badge),
 
     ( name : 'play_music';func : @lua_core_play_music),
 

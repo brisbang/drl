@@ -3,7 +3,7 @@ unit doomplayerview;
 interface
 uses viotypes, vgenerics,
      dfitem, dfdata,
-     doomio, doomtrait, doomconfirmview, dfhof;
+     doomio, doomtrait, doomconfirmview, dfhof, doomhooks;
 
 type TPlayerViewState = (
   PLAYERVIEW_INVENTORY,
@@ -72,6 +72,7 @@ protected
   procedure Sort( aList : TItemViewArray );
 private
   procedure ShowBadgesForPage( aPage : LongInt );
+  function  BadgeIsPossible( const aBadgeId : LongInt; const aParams : array of const ) : Boolean;
 protected
   procedure Filter( aSet : TItemTypeSet );
 protected
@@ -670,9 +671,10 @@ begin
           iString := ' {!'
         else if LuaSystem.Get( [ 'player','__props', 'badges', iBadgeId ], False ) then
           iString := ' {g'
+        else if BadgeIsPossible(cn, []) then
+          iString := ' {y'
         else
-          iString := ' {d';
-//          CallHook(Hook_IsPossible,[]);
+          iString := ' {r';
         iString += iBadgeName;
         VTIG_Text( Padded(iString,31) + '}{l -- ' + getString('desc') + '}' );
       end;
@@ -680,6 +682,15 @@ begin
       Free;
     end;
   end;
+end;
+
+function TPlayerView.BadgeIsPossible( const aBadgeId : LongInt; const aParams : array of const ) : Boolean;
+begin
+   if BadgeHookIsPossible in Badges[aBadgeId].Hooks then
+   begin
+     Exit(Boolean(LuaSystem.ProtectedCall( [ 'badges', aBadgeId, HookNames[Hook_IsPossible] ], aParams )));
+   end;
+   Exit(true);
 end;
 
 procedure TPlayerView.PushItem( aItem : TItem; aArray : TItemViewArray );

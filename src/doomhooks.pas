@@ -47,7 +47,8 @@ const
   Hook_OnCreateEpisode = 40;  // Module, Challenge, Core (Chained)
   Hook_OnIntro         = 41;  // Module, Challenge, Core (Chained)
   Hook_OnGenerate      = 42;  // Module, Challenge, Core (Chained)
-  HookAmount           = 43;
+  Hook_IsPossible      = 43;
+  HookAmount           = 44;
 
 const AllHooks      : TFlags = [ 0..HookAmount-1 ];
 
@@ -56,6 +57,7 @@ var   BeingHooks    : TFlags;
       ChainedHooks  : TFlags;
       LevelHooks    : TFlags;
       GlobalHooks   : TFlags;
+      BadgeHooks    : TFlags;
 
 const HookNames : array[ 0..HookAmount-1 ] of AnsiString = (
       'OnCreate', 'OnAction', 'OnAttacked', 'OnUseActive', 'OnDie', 'OnDieCheck',
@@ -64,7 +66,8 @@ const HookNames : array[ 0..HookAmount-1 ] of AnsiString = (
       'OnHitBeing', 'OnReload', 'OnEquipTick', 'OnEquipCheck', 'OnAct', 'OnDestroy', 'OnEnter',
       'OnFire', 'OnFired', 'OnExit', 'OnTick', 'OnCompletedCheck', 'OnNuked',
       'OnLoad','OnLoaded','OnUnLoad', 'OnCreatePlayer', 'OnLevelUp','OnPreLevelUp',
-      'OnWinGame', 'OnMortem', 'OnMortemPrint', 'OnCreateEpisode', 'OnIntro', 'OnGenerate'
+      'OnWinGame', 'OnMortem', 'OnMortemPrint', 'OnCreateEpisode', 'OnIntro', 'OnGenerate',
+      'IsPossible'
       );
 
 function LoadHooks( const Table : array of Const ) : TFlags;
@@ -102,6 +105,7 @@ LevelHooks   := ChainedHooks + [ Hook_OnEnter, Hook_OnKill, Hook_OnExit, Hook_On
 GlobalHooks  := LevelHooks + [ Hook_OnEnter, Hook_OnKill, Hook_OnExit, Hook_OnTick, Hook_OnLoad, Hook_OnLoaded, Hook_OnUnLoad, Hook_OnCreatePlayer, Hook_OnLevelUp,
   Hook_OnPreLevelUp, Hook_OnWinGame, Hook_OnMortem, Hook_OnMortemPrint, Hook_OnCreateEpisode,
   Hook_OnIntro, Hook_OnGenerate ];
+BadgeHooks  := [ Hook_IsPossible ];
 
 end.
 

@@ -1,6 +1,7 @@
 MAXX           = 78;
 MAXY           = 20;
 MAXAFFECT      = 12;
+MAXBADGE       = 250;
 MAX_INV_SIZE   = 22;
 MAX_EQ_SIZE    = 4;
 

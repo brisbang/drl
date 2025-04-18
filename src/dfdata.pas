@@ -270,10 +270,18 @@ type
     StatusStr  : DWord;
   end;
 
+  TBadgeData = record
+		Name       : AnsiString;
+		Desc       : AnsiString;
+		Level      : Byte;
+    Hooks      : set of (BadgeHookIsPossible);
+  end;
+
 var
   Missiles  : array of TMissileData;
   Shotguns  : array of TShotgunData;
   Affects   : array of TAffectData;
+  Badges    : array of TBadgeData;
 
 const
 

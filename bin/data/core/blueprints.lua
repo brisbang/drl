@@ -93,6 +93,8 @@ core.register_blueprint "badge"
 	name      = { true,  core.TSTRING },
 	desc      = { true,  core.TSTRING },
 	level     = { true,  core.TNUMBER },
+
+	IsPossible = { false, core.TFUNC },
 }
 
 core.register_blueprint "award_level"
