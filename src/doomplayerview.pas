@@ -640,8 +640,8 @@ begin
   if HOF.ShowAngelicBadges() then iMaxPages := 6 else iMaxPages := 5;
   Assert(aPage > 0);
   Assert(aPage <= iMaxPages);
-  VTIG_BeginWindow('Achievements', 'achievements', FSize );
-  VTIG_TEXT( 'Page {0}', [ aPage ] );
+  VTIG_BeginWindow('Achievements - '+HOF.GetColourForBadgePage(aPage), 'achievements', FSize );
+//  VTIG_TEXT( 'Page {0}', [ aPage ] );
   FRect := VTIG_GetWindowRect;
   ShowBadgesForPage(aPage);
   VTIG_End('{l<{!Left,Right}> panels, <{!Escape}> exit}');

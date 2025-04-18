@@ -35,6 +35,7 @@ type THOF = object
   function AddCounted( const aRootID, aLeafID, aElementID : AnsiString; aAmount : DWord = 1 ) : Boolean;
   function GetCounted( const aRootID, aLeafID, aElementID : AnsiString ) : DWord;
   function ShowAngelicBadges() : Boolean;  //Is the player ready to see the Angelic challenges based on their progress?
+  function GetColourForBadgePage( const aPage : LongInt ) : AnsiString; //Get the colour for the badge based on the page number.
 private
   FScore      : TScoreFile;
   FPlayerInfo : TVXMLDataFile;
@@ -238,23 +239,31 @@ begin
   Exit( GetCount( 'player/'+aRootID+'/'+aLeafID+'[@id="'+aElementID+'"]' ) );
 end;
 
+function THOF.GetColourForBadgePage( const aPage : LongInt ): AnsiString;
+  const BadgeLevelName : array[1..6] of string = (' Bronze ',' Silver ','  Gold  ','Platinum','Diamond ','Angelic ');
+begin
+  Assert(aPage >= 1);
+  Assert(aPage <= 6);
+  Exit(BadgeLevelName[aPage]);
+end;
+
 function THOF.GetPagedPlayerReport : TPagedReport;
-const BadgeLevelName : array[1..6] of string = (' Bronze ',' Silver ','  Gold  ','Platinum','Diamond ','Angelic ');
 var
    iPage    : TStringGArray;
 
-   count    : DWord;
-   iTotal   : DWord;
-   iFound   : DWord;
-   cn,cn2,c : LongInt;
-   iDiffID  : AnsiString;
-   iDiffCnt : DWord;
-   iChalCnt : DWord;
-   iPages   : DWord;
-   iElement : TDOMElement;
-   iBadges  : LongInt;
-   iString  : AnsiString;
-   iDesc    : AnsiString;
+   count      : DWord;
+   iTotal     : DWord;
+   iFound     : DWord;
+   cn,cn2,c   : LongInt;
+   iDiffID    : AnsiString;
+   iDiffCnt   : DWord;
+   iChalCnt   : DWord;
+   iPages     : DWord;
+   iElement   : TDOMElement;
+   iBadges    : LongInt;
+   iBadgeName : AnsiString;
+   iString    : AnsiString;
+   iDesc      : AnsiString;
 
    iExpRanks   : Boolean;
    iSkillRanks : Boolean;
@@ -557,8 +566,8 @@ begin
       finally
         Free;
       end;
-
-      Result.Add(iPage, 'Badges - '+BadgeLevelName[cn2], Padded('Total '+Trim(BadgeLevelName[cn2])+' badges received',36)+' : {!'+IntToStr(iFound)+'}/{!'+IntToStr(iTotal)+'}');
+      iBadgeName := GetColourForBadgePage(cn2);
+      Result.Add(iPage, 'Badges - '+iBadgeName, Padded('Total '+Trim(iBadgeName)+' badges received',36)+' : {!'+IntToStr(iFound)+'}/{!'+IntToStr(iTotal)+'}');
 
     end;
   end;
