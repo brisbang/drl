@@ -649,9 +649,11 @@ end;
 
 procedure TPlayerView.ShowBadgesForPage( aPage : Integer );
 var
-    iBadges   : LongInt;
-    cn        : LongInt;
-    iString   : AnsiString;
+    iBadges    : LongInt;
+    cn         : LongInt;
+    iBadgeId   : AnsiString;
+    iString    : AnsiString;
+    iBadgeName : AnsiString;
 begin
   if LuaSystem.Defined(['badges','__counter']) then
   begin
@@ -661,12 +663,16 @@ begin
     try
       if getInteger('level') = aPage then
       begin
-        if HOF.GetCounted( 'badges', 'badge', getString('id') ) > 0 then
-        begin
-          iString := ' {!'+getString('name');
-        end
+        iBadgeId := getString('id');
+        iBadgeName := getString('name');
+        if HOF.GetCounted( 'badges', 'badge', iBadgeId ) > 0 then
+          iString := ' {!'
+        else if LuaSystem.Get( [ 'player','__props', 'badges', iBadgeId ], False ) then
+          iString := ' {g'
         else
-          iString := ' {d'+getString('name');
+          iString := ' {d';
+//          CallHook(Hook_IsPossible,[]);
+        iString += iBadgeName;
         VTIG_Text( Padded(iString,31) + '}{l -- ' + getString('desc') + '}' );
       end;
     finally
