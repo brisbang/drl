@@ -598,30 +598,9 @@ function drl.OnCreateEpisode()
 	player.episode[BOSS_LEVEL+1] = { script = "hell_fortress", style = 4, deathname = "the Hell Fortress" }
 
 	for _,pairing in ipairs(paired) do
-		local pick = table.random_pick(pairing)
-		local level_proto = levels[pick]
-		local level_mapped_to_range = core.resolve_range(level_proto.level)
-		local level_not_generated = nil
-		--TODO: Work out how to manage discarded levels so that they can be signalled in the badges.
-		--When a player descends to a special level, or ignores the special level, then we need to have a list of never-generated levels.
-		--The badges can then know when options are unavailable.
-		for l in pairing do
-			if l ~= pick then level_not_generated = levels[l] end
-		end
-
+		local level_proto = levels[table.random_pick(pairing)]
 		if (not level_proto.canGenerate) or level_proto.canGenerate() then
-			player.episode[level_mapped_to_range].special = level_proto.id
-			if level_not_generated then
-				player.episode[level_mapped_to_range].special_not_generated = { level_not_generated.id }
-			else
-				player.episode[level_mapped_to_range].special_not_generated = {}
-			end
-		else
-			if level_not_generated then
-				player.episode[level_mapped_to_range].special_not_generated = { level_proto.id, level_not_generated.id }
-			else
-				player.episode[level_mapped_to_range].special_not_generated = { level_proto.id }
-			end
+			player.episode[core.resolve_range(level_proto.level)].special = level_proto.id
 		end
 	end
 	local SpecLevCount = 0
