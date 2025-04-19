@@ -15,6 +15,7 @@ function drl.register_challenges()
 		name  = "Berserker Bronze Badge",
 		desc  = "Reach level 9 on Angel of Berserk",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aob' end,
 	}
 
 	register_badge "berserker2"
@@ -22,6 +23,7 @@ function drl.register_challenges()
 		name  = "Berserker Silver Badge",
 		desc  = "Complete Angel of Berserk (AoB)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aob' end,
 	}
 
 	register_badge "berserker3"
@@ -29,6 +31,10 @@ function drl.register_challenges()
 		name  = "Berserker Gold Badge",
 		desc  = "Complete AoB on HMP",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aob' and
+			DIFFICULTY >= DIFF_HARD
+		end,
 	}
 
 	register_badge "berserker4"
@@ -36,6 +42,10 @@ function drl.register_challenges()
 		name  = "Berserker Platinum Badge",
 		desc  = "Complete AoB on UV/75% kills",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aob' and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "berserker5"
@@ -43,6 +53,10 @@ function drl.register_challenges()
 		name  = "Berserker Diamond Badge",
 		desc  = "Complete AoB on N!/60% kills",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aob' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "berserker6"
@@ -50,6 +64,11 @@ function drl.register_challenges()
 		name  = "Berserker Angelic Badge",
 		desc  = "Complete AoB+AoMs on N!",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aob' and
+			SCHALLENGE == "challenge_aoms" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_medal "gargulec1"
@@ -100,6 +119,7 @@ function drl.register_challenges()
 				end
 				level.data.final_reward.hphase = 1
 			end
+			if l == 9 then player:add_badge("berserker1") end
 		end,
 		
 		OnFire = function (item,being)
@@ -116,7 +136,6 @@ function drl.register_challenges()
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 9  then player:add_badge("berserker1") end
 			if player:has_won() then
 
 				if statistics.unique_kills == statistics.max_unique_kills then
@@ -150,6 +169,7 @@ function drl.register_challenges()
 		name  = "Marksman Bronze Badge",
 		desc  = "Reach level 16 on Angel of Marksmanship",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aomr' end,
 	}
 
 	register_badge "marksman2"
@@ -157,6 +177,7 @@ function drl.register_challenges()
 		name  = "Marksman Silver Badge",
 		desc  = "Complete Angel of Marksmanship (AoMr)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aomr' end,
 	}
 
 	register_badge "marksman3"
@@ -164,6 +185,10 @@ function drl.register_challenges()
 		name  = "Marksman Gold Badge",
 		desc  = "Complete AoMr on UV",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomr' and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "marksman4"
@@ -171,6 +196,11 @@ function drl.register_challenges()
 		name  = "Marksman Platinum Badge",
 		desc  = "Complete AoMr on UV/100% kills",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomr' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_badge "marksman5"
@@ -178,6 +208,10 @@ function drl.register_challenges()
 		name  = "Marksman Diamond Badge",
 		desc  = "Complete AoMr on N!",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomr' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "marksman6"
@@ -185,6 +219,11 @@ function drl.register_challenges()
 		name  = "Marksman Angelic Badge",
 		desc  = "Complete AoMr+AoD on N!/75% kills",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomr' and
+			SCHALLENGE == "challenge_aod" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_challenge "challenge_aomr"
@@ -209,6 +248,7 @@ function drl.register_challenges()
 				level.data.final_reward.pammo = 1
 				level.data.final_reward.mod_power = 1
 			end
+			if l == 16 then player:add_badge("marksman1") end
 		end,
 		
 		OnFire = function (item,being)
@@ -220,7 +260,6 @@ function drl.register_challenges()
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("marksman1") end
 			if player:has_won() then
 				player:add_badge("marksman2")
 				if DIFFICULTY >= DIFF_VERYHARD  then
@@ -246,6 +285,7 @@ function drl.register_challenges()
 		name  = "Shottyman Bronze Badge",
 		desc  = "Reach level 16 on Angel of Shotgunnery",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aosh' end,
 	}
 
 	register_badge "shotgun2"
@@ -253,6 +293,7 @@ function drl.register_challenges()
 		name  = "Shottyman Silver Badge",
 		desc  = "Complete Angel of Shotgunnery (AoSh)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aosh' end,
 	}
 
 	register_badge "shotgun3"
@@ -260,6 +301,10 @@ function drl.register_challenges()
 		name  = "Shottyman Gold Badge",
 		desc  = "Complete AoSh on UV",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aosh' and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "shotgun4"
@@ -267,6 +312,10 @@ function drl.register_challenges()
 		name  = "Shottyman Platinum Badge",
 		desc  = "Complete AoSh on N!",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aosh' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "shotgun5"
@@ -274,6 +323,10 @@ function drl.register_challenges()
 		name  = "Shottyman Diamond Badge",
 		desc  = "Complete AoSh on N!/80% kills",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aosh' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "shotgun6"
@@ -281,6 +334,11 @@ function drl.register_challenges()
 		name  = "Shottyman Angelic Badge",
 		desc  = "Complete AoSh+AoOC on N!/75% kills",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aosh' and
+			SCHALLENGE == "challenge_aooc" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_challenge "challenge_aosh"
@@ -313,6 +371,7 @@ function drl.register_challenges()
 				level.data.final_reward.pshell = 1
 				level.data.final_reward.dshotgun = 1
 			end
+			if l >= 16 then player:add_badge("shotgun1") end
 		end,
 		
 		OnFire = function (item,being)
@@ -324,7 +383,6 @@ function drl.register_challenges()
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("shotgun1") end
 			if player:has_won() then
 				player:add_badge("shotgun2")
 				if DIFFICULTY >= DIFF_VERYHARD  then player:add_badge("shotgun3") end
@@ -346,6 +404,7 @@ function drl.register_challenges()
 		name  = "Lightfoot Bronze Badge",
 		desc  = "Reach level 9 on Angel of Light Travel",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aolt' end,
 	}
 
 	register_badge "lightfoot2"
@@ -353,6 +412,7 @@ function drl.register_challenges()
 		name  = "Lightfoot Silver Badge",
 		desc  = "Complete Angel of Light Travel (AoLT)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aolt' end,
 	}
 
 	register_badge "lightfoot3"
@@ -360,6 +420,10 @@ function drl.register_challenges()
 		name  = "Lightfoot Gold Badge",
 		desc  = "Complete AoLT on HMP",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aolt' and
+			DIFFICULTY >= DIFF_HARD
+		end,
 	}
 
 	register_badge "lightfoot4"
@@ -367,6 +431,11 @@ function drl.register_challenges()
 		name  = "Lightfoot Platinum Badge",
 		desc  = "Complete AoLT on UV+ w/<20,000 turns",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aolt' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			statistics.game_time <= 20000
+		end,
 	}
 
 	register_badge "lightfoot5"
@@ -374,6 +443,19 @@ function drl.register_challenges()
 		name  = "Lightfoot Diamond Badge",
 		desc  = "Complete AoLT on N! w/o melee kills",
 		level = 5,
+		isPossible = function() 
+			local melee_tot = kills.get_type("melee")
+			for index = 1, items.__counter do
+				if items[index].group == "weapon-melee" then
+					melee_tot = melee_tot + kills.get_type(items[index].id)
+				end
+			end
+		
+			return
+			CHALLENGE == 'challenge_aolt' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			melee_tot == 0
+		end,
 	}
 
 	register_badge "lightfoot6"
@@ -381,6 +463,20 @@ function drl.register_challenges()
 		name  = "Lightfoot Angelic Badge",
 		desc  = "Complete ArchAoLT on N! w/o melee kills",
 		level = 6,
+		isPossible = function() 
+			local melee_tot = kills.get_type("melee")
+			for index = 1, items.__counter do
+				if items[index].group == "weapon-melee" then
+					melee_tot = melee_tot + kills.get_type(items[index].id)
+				end
+			end
+		
+			return
+			CHALLENGE == 'challenge_aolt' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			ARCHANGEL and
+			melee_tot == 0
+		end,	
 	}
 
 	register_challenge "challenge_aolt"
@@ -426,17 +522,19 @@ function drl.register_challenges()
 				level.data.final_reward.pammo = 1
 				level.data.final_reward.pshell = 1
 			end
+			if l == 9 then player:add_badge("lightfoot1") end
 		end,
 		
 		OnMortem = function ()
-			local melee_tot = kills.get_type("melee")
-			for index = 1, items.__counter do
-				if items[index].group == "weapon-melee" then
-					melee_tot = melee_tot + kills.get_type(items[index].id)
-				end
-			end
-			if player.depth >= 9 then player:add_badge("lightfoot1") end
+			local melee_tot
 			if player:has_won() then
+				melee_tot = kills.get_type("melee")
+				for index = 1, items.__counter do
+					if items[index].group == "weapon-melee" then
+						melee_tot = melee_tot + kills.get_type(items[index].id)
+					end
+				end
+
 				player:add_badge("lightfoot2")
 				if DIFFICULTY >= DIFF_HARD                                        then player:add_badge("lightfoot3") end
 				if DIFFICULTY >= DIFF_VERYHARD  and statistics.game_time <= 20000 then player:add_badge("lightfoot4") end
@@ -456,6 +554,7 @@ function drl.register_challenges()
 		name  = "Eagerness Bronze Badge",
 		desc  = "Reach level 9 on Angel of Impatience",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aoi' end,
 	}
 
 	register_badge "impatient2"
@@ -463,6 +562,7 @@ function drl.register_challenges()
 		name  = "Eagerness Silver Badge",
 		desc  = "Complete Angel of Impatience (AoI)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aoi' end,
 	}
 
 	register_badge "impatient3"
@@ -470,6 +570,10 @@ function drl.register_challenges()
 		name  = "Eagerness Gold Badge",
 		desc  = "Complete AoI on HMP",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoi' and
+			DIFFICULTY >= DIFF_HARD
+		end,
 	}
 
 	register_badge "impatient4"
@@ -477,6 +581,11 @@ function drl.register_challenges()
 		name  = "Eagerness Platinum Badge",
 		desc  = "Complete AoI on UV as non-Marine",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoi' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			klasses[player.klass].id ~= "marine"
+		end,
 	}
 
 	register_badge "impatient5"
@@ -484,6 +593,11 @@ function drl.register_challenges()
 		name  = "Eagerness Diamond Badge",
 		desc  = "Complete AoI on N! as Technician",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoi' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			klasses[player.klass].id == "technician"
+		end,
 	}
 
 	register_badge "impatient6"
@@ -491,6 +605,11 @@ function drl.register_challenges()
 		name  = "Eagerness Angelic Badge",
 		desc  = "Complete AoI+AoRA on N!/90% kills",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoi' and
+			SCHALLENGE == "challenge_aora" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_challenge "challenge_aoi"
@@ -522,10 +641,10 @@ function drl.register_challenges()
 				level.data.final_reward.lmed = nil
 				level.data.final_reward.sboots = 1
 			end
+			if l == 9 then player:add_badge("impatient1") end
 		end,
 		
 		OnMortem = function ()
-			if player.depth >= 9 then player:add_badge("impatient1") end
 			if player:has_won() then
 				player:add_badge("impatient2")
 				if DIFFICULTY >= DIFF_HARD                                                   then player:add_badge("impatient3") end
@@ -544,6 +663,7 @@ function drl.register_challenges()
 		name  = "Daredevil Bronze Badge",
 		desc  = "Reach level 9 on Angel of Confidence",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aocn' end,
 	}
 
 	register_badge "confident2"
@@ -551,6 +671,7 @@ function drl.register_challenges()
 		name  = "Daredevil Silver Badge",
 		desc  = "Complete Angel of Confidence (AoCn)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aocn' end,
 	}
 
 	register_badge "confident4"
@@ -558,6 +679,11 @@ function drl.register_challenges()
 		name  = "Daredevil Platinum Badge",
 		desc  = "Complete AoCn on UV/100% kills",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aocn' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_challenge "challenge_aocn"
@@ -584,6 +710,10 @@ function drl.register_challenges()
 				end
 			end
 			statistics.bonus_levels_count = SpecLevCount
+		end,
+
+		OnEnter = function (l, lid)
+			if l == 9 then player:add_badge("confident1") end
 		end,
 
 		OnCreatePlayer = function ()
@@ -630,7 +760,6 @@ function drl.register_challenges()
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 9 then player:add_badge("confident1") end
 			if player:has_won() then
 				player:add_badge("confident2")
 				if statistics.unique_kills == statistics.max_unique_kills and DIFFICULTY >= DIFF_VERYHARD then player:add_badge("confident4") end
@@ -647,6 +776,7 @@ function drl.register_challenges()
 		name  = "Inquisitor Gold Badge",
 		desc  = "Complete Angel of Purity (AoP)",
 		level = 3,
+		isPossible = function() return CHALLENGE == 'challenge_aop' end,
 	}
 
 	register_badge "purity4"
@@ -654,6 +784,10 @@ function drl.register_challenges()
 		name  = "Inquisitor Platinum Badge",
 		desc  = "Complete AoP on UV",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aop' and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "purity5"
@@ -661,6 +795,11 @@ function drl.register_challenges()
 		name  = "Inquisitor Diamond Badge",
 		desc  = "Complete AoP on N! as Marine",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aop' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			klasses[player.klass].id == "marine"
+		end,
 	}
 
 	register_badge "purity6"
@@ -668,6 +807,11 @@ function drl.register_challenges()
 		name  = "Inquisitor Angelic Badge",
 		desc  = "Complete AoP+AoRA on N!",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aop' and
+			SCHALLENGE == "challenge_aora" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_challenge "challenge_aop"
@@ -717,6 +861,7 @@ function drl.register_challenges()
 		name  = "Quartermaster Bronze Badge",
 		desc  = "Reach level 16 on Angel of Red Alert",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aora' end,
 	}
 
 	register_badge "redalert2"
@@ -724,6 +869,7 @@ function drl.register_challenges()
 		name  = "Quartermaster Silver Badge",
 		desc  = "Complete Angel of Red Alert (AoRA)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aora' end,
 	}
 
 	register_badge "redalert3"
@@ -731,6 +877,10 @@ function drl.register_challenges()
 		name  = "Quartermaster Gold Badge",
 		desc  = "Complete AoRA with 100% kills",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aora' and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_badge "redalert4"
@@ -738,6 +888,10 @@ function drl.register_challenges()
 		name  = "Quartermaster Platinum Badge",
 		desc  = "Complete AoRA on N!",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aora' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "redalert5"
@@ -745,6 +899,11 @@ function drl.register_challenges()
 		name  = "Quartermaster Diamond Badge",
 		desc  = "Complete AoRA on UV/100% kills",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aora' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_badge "redalert6"
@@ -752,6 +911,11 @@ function drl.register_challenges()
 		name  = "Quartermaster Angelic Badge",
 		desc  = "Complete ArchAoRA on UV/80% kills",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aora' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			ARCHANGEL
+		end,
 	}
 
 	register_challenge "challenge_aora"
@@ -781,10 +945,10 @@ function drl.register_challenges()
 			if lid == "hells_arena" then
 				level.data.drop_zone = area(3,8,7,12)
 			end
+			if l == 16 then player:add_badge("redalert1") end
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("redalert1") end
 			if player:has_won() then
 				player:add_badge("redalert2")
 				if DIFFICULTY >= DIFF_NIGHTMARE then player:add_badge("redalert4") end
@@ -807,6 +971,7 @@ function drl.register_challenges()
 		name  = "Hunter Bronze Badge",
 		desc  = "Reach level 9 on Angel of Darkness",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aod' end,
 	}
 
 	register_badge "darkness2"
@@ -814,6 +979,7 @@ function drl.register_challenges()
 		name  = "Hunter Silver Badge",
 		desc  = "Complete Angel of Darkness (AoD)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aod' end,
 	}
 
 	register_badge "darkness3"
@@ -821,6 +987,10 @@ function drl.register_challenges()
 		name  = "Hunter Gold Badge",
 		desc  = "Complete AoD on HMP/80% kills",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aod' and
+			DIFFICULTY >= DIFF_HARD
+		end,
 	}
 
 	register_badge "darkness4"
@@ -828,6 +998,10 @@ function drl.register_challenges()
 		name  = "Hunter Platinum Badge",
 		desc  = "Complete AoD on N!",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aod' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "darkness5"
@@ -835,6 +1009,11 @@ function drl.register_challenges()
 		name  = "Hunter Diamond Badge",
 		desc  = "Complete AoD on N! w/Explorer Pin",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aod' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			medals["explorer"].isPossible()
+		end,
 	}
 
 	register_challenge "challenge_aod"
@@ -847,8 +1026,9 @@ function drl.register_challenges()
 		let         = "D",
 		secondary   = { "AoCn", "AoOC", "A100", "AoLT", "AoI", "AoP", "AoRA", "AoMs" },
 
-		OnEnter = function ()
+		OnEnter = function (l, lid)
 			level.flags[ LF_RESPAWN ] = true
+			if l == 9 then player:add_badge("darkness1") end
 		end,
 
 		OnCreatePlayer = function ()
@@ -864,7 +1044,6 @@ function drl.register_challenges()
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 9 then player:add_badge("darkness1") end
 			if player:has_won() then
 				player:add_badge("darkness2")
 				if DIFFICULTY >= DIFF_HARD and statistics.unique_kills >= statistics.max_unique_kills * 0.8 then player:add_badge("darkness3") end
@@ -886,6 +1065,7 @@ function drl.register_challenges()
 		name  = "Destroyer Bronze Badge",
 		desc  = "Reach level 16 in Angel of Max Carnage",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aomc' end,
 	}
 
 	register_badge "carnage2"
@@ -893,6 +1073,7 @@ function drl.register_challenges()
 		name  = "Destroyer Silver Badge",
 		desc  = "Complete Angel of Max Carnage (AoMC)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aomc' end,
 	}
 
 	register_badge "carnage3"
@@ -900,6 +1081,11 @@ function drl.register_challenges()
 		name  = "Destroyer Gold Badge",
 		desc  = "Complete AoMC on HMP w/Untouchable Pin",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomc' and
+			DIFFICULTY >= DIFF_HARD and
+			medals["untouchable1"].isPossible()
+		end,
 	}
 
 	register_badge "carnage4"
@@ -907,6 +1093,11 @@ function drl.register_challenges()
 		name  = "Destroyer Platinum Badge",
 		desc  = "Complete AoMC on UV w/Untouchable Medal",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomc' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			medals["untouchable2"].isPossible()
+		end,
 	}
 
 	register_badge "carnage5"
@@ -914,6 +1105,11 @@ function drl.register_challenges()
 		name  = "Destroyer Diamond Badge",
 		desc  = "Complete AoMC on N! w/Untouchable Cross",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aomc' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			medals["untouchable3"].isPossible()
+		end,
 	}
 
 	register_challenge "challenge_aomc"
@@ -933,8 +1129,11 @@ function drl.register_challenges()
 			end
 		end,
 
+		OnEnter = function (l, lid)
+			if l == 16 then player:add_badge("carnage1") end
+		end,
+
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("carnage1") end
 			if player:has_won() then
 				player:add_badge("carnage2")
 				if DIFFICULTY >= DIFF_HARD and statistics.damage_taken < 500 then player:add_badge("carnage3") end
@@ -952,6 +1151,7 @@ function drl.register_challenges()
 		name  = "Masochist Gold Badge",
 		desc  = "Complete Angel of Masochism (AoMs)",
 		level = 3,
+		isPossible = function() return CHALLENGE == 'challenge_aoms' end,
 	}
 
 	register_badge "masochism4"
@@ -959,6 +1159,11 @@ function drl.register_challenges()
 		name  = "Masochist Platinum Badge",
 		desc  = "Complete AoMs on HMP w/o Bad",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoms' and
+			DIFFICULTY >= DIFF_HARD and
+			player:get_trait( traits["badass"].nid ) == 0
+		end,
 	}
 
 	register_badge "masochism5"
@@ -966,6 +1171,11 @@ function drl.register_challenges()
 		name  = "Masochist Diamond Badge",
 		desc  = "Complete AoMs on N! w/o Iro/Bad",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoms' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			player:get_trait( traits["badass"].nid ) + player:get_trait( traits["ironman"].nid ) == 0
+		end,
 	}
 
 	register_badge "masochism6"
@@ -973,6 +1183,11 @@ function drl.register_challenges()
 		name  = "Masochist Angelic Badge",
 		desc  = "Complete ArchAoMs on N!",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aoms' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			ARCHANGEL
+		end,
 	}
 
 	register_challenge "challenge_aoms"
@@ -1057,6 +1272,7 @@ function drl.register_challenges()
 		name  = "Centurial Bronze Badge",
 		desc  = "Reach level 16 on Angel of 100",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_a100' end,
 	}
 
 	register_badge "century2"
@@ -1064,6 +1280,7 @@ function drl.register_challenges()
 		name  = "Centurial Silver Badge",
 		desc  = "Reach level 51 on Angel of 100",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_a100' end,
 	}
 
 	register_badge "century3"
@@ -1071,6 +1288,7 @@ function drl.register_challenges()
 		name  = "Centurial Gold Badge",
 		desc  = "Complete Angel of 100 (Ao100)",
 		level = 3,
+		isPossible = function() return CHALLENGE == 'challenge_a100' end,
 	}
 
 	register_badge "century4"
@@ -1078,6 +1296,10 @@ function drl.register_challenges()
 		name  = "Centurial Platinum Badge",
 		desc  = "Complete Ao100 on UV",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_a100' and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "century5"
@@ -1085,6 +1307,10 @@ function drl.register_challenges()
 		name  = "Centurial Diamond Badge",
 		desc  = "Complete Ao100 on N!",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_a100' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "century6"
@@ -1092,6 +1318,11 @@ function drl.register_challenges()
 		name  = "Centurial Angelic Badge",
 		desc  = "Complete ArchAo666 on N!",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_a100' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			ARCHANGEL
+		end,
 	}
 
 	register_challenge "challenge_a100"
@@ -1153,6 +1384,8 @@ function drl.register_challenges()
 			local LevCount = 100
 			if ARCHANGEL then LevCount = 666 end
 
+			if l == 16 then player:add_badge("century1") end
+			if l == 51 then player:add_badge("century2") end
 			if l == LevCount and player.eq.armor and player.eq.armor.id == "uberarmor" then
 				level.flags[ LF_BOSS ] = true
 				ui.msg_enter("Something is wrong... Something is really wrong here!")
@@ -1167,7 +1400,7 @@ function drl.register_challenges()
 		end,
 
 		OnExit = function (l)
-			    if l == 25 then ui.msg_enter("Well, that was easy. Now starts the really hard part...")
+			if l == 25 then ui.msg_enter("Well, that was easy. Now starts the really hard part...")
 			elseif l == 50 then ui.msg_enter("Halfway there, and it's getting less and less funny!")
 			elseif l == 75 then ui.msg_enter("Just 25 more, you can make it!")
 			elseif l == 90 then ui.msg_enter("Ten more! Can you really take the heat?")
@@ -1214,8 +1447,6 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("century1") end
-			if player.depth >= 51 then player:add_badge("century2") end
 			if player:has_won() then
 				player:add_badge("century3")
 				if DIFFICULTY >= DIFF_VERYHARD then player:add_badge("century4") end
@@ -1235,6 +1466,7 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Pacifist Bronze Badge",
 		desc  = "Reach level 16 on Angel of Pacifism",
 		level = 1,
+		isPossible = function() return CHALLENGE == 'challenge_aopc' end,
 	}
 
 	register_badge "pacifism2"
@@ -1242,6 +1474,7 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Pacifist Silver Badge",
 		desc  = "Complete Angel of Pacifism (AoPc)",
 		level = 2,
+		isPossible = function() return CHALLENGE == 'challenge_aopc' end,
 	}
 
 	register_badge "pacifism3"
@@ -1249,6 +1482,10 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Pacifist Gold Badge",
 		desc  = "Complete AoPc in under 10 minutes",
 		level = 3,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aopc' and
+			statistics.real_time <= 10*60
+		end,
 	}
 
 	register_badge "pacifism6"
@@ -1256,6 +1493,11 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Pacifist Angelic Badge",
 		desc  = "Complete ArchAoPc game with @<1 kill@>",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aopc' and
+			ARCHANGEL and
+			statistics.kills <= 1
+		end,
 	}
 
 	register_challenge "challenge_aopc"
@@ -1290,6 +1532,7 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		end,
 
 		OnEnter = function (l,lid)
+			if l == 16 then player:add_badge("pacifism1") end
 			if not ARCHANGEL and l % 3 == 0 and player.explevel < 25 then
 				player:level_up()
 			end
@@ -1313,7 +1556,6 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		end,
 
 		OnMortem = function ()
-			if player.depth >= 16 then player:add_badge("pacifism1") end
 			if player:has_won() then
 				player:add_badge("pacifism2")
 				if statistics.real_time <= 10*60 then
@@ -1332,6 +1574,7 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Everyman Gold Badge",
 		desc  = "Complete Angel of Humanity (AoHu)",
 		level = 3,
+		isPossible = function() return CHALLENGE == 'challenge_aohu' end,
 	}
 
 	register_badge "everyman4"
@@ -1339,6 +1582,11 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Everyman Platinum Badge",
 		desc  = "Complete AoHu as Conqueror",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aohu' and
+			((statistics.bonus_levels_completed == statistics.bonus_levels_count) or
+			 (statistics.bonus_levels_completed + 1 == statistics.bonus_levels_count and level.flags[ LF_BOUNS ]))
+		end,
 	}
 
 	register_badge "everyman5"
@@ -1346,6 +1594,12 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Everyman Diamond Badge",
 		desc  = "Complete AoHu on UV as Conqueror",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aohu' and
+			DIFFICULTY >= DIFF_VERYHARD and
+			((statistics.bonus_levels_completed == statistics.bonus_levels_count) or
+			 (statistics.bonus_levels_completed + 1 == statistics.bonus_levels_count and level.flags[ LF_BOUNS ]))
+		end,
 	}
 
 	register_badge "everyman6"
@@ -1353,6 +1607,11 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Everyman Angelic Badge",
 		desc  = "Complete ArchAoHu on N!",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aohu' and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			ARCHANGEL
+		end,
 	}
 
 	register_medal "thomas"
@@ -1431,6 +1690,7 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Daredevil Gold Badge",
 		desc  = "Complete Angel of Overconfidence (AoOC)",
 		level = 3,
+		isPossible = function() return CHALLENGE == 'challenge_aooc' end,
 	}
 
 	register_badge "confident5"
@@ -1438,6 +1698,10 @@ You can rest easy knowing that you're Boss. Yet at the last level you sensed som
 		name  = "Daredevil Diamond Badge",
 		desc  = "Complete AoOC on N!/80% kills",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == 'challenge_aooc' and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_challenge "challenge_aooc"

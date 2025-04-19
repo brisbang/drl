@@ -94,7 +94,7 @@ core.register_blueprint "badge"
 	desc      = { true,  core.TSTRING },
 	level     = { true,  core.TNUMBER },
 
-	IsPossible = { false, core.TFUNC },
+	isPossible = { false, core.TFUNC },
 }
 
 core.register_blueprint "award_level"

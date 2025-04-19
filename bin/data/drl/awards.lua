@@ -6,6 +6,7 @@ function drl.register_awards()
 		name  = "Technician Bronze Badge",
 		desc  = "Discover an assembly",
 		level = 1,
+		isPossible = function() return true end,
 	}
 
 	register_badge "technician2"
@@ -13,6 +14,7 @@ function drl.register_awards()
 		name  = "Technician Silver Badge",
 		desc  = "Discover an advanced assembly",
 		level = 2,
+		isPossible = function() return true end,
 	}
 
 	register_badge "technician3"
@@ -20,6 +22,7 @@ function drl.register_awards()
 		name  = "Technician Gold Badge",
 		desc  = "Discover {!all} basic assemblies",
 		level = 3,
+		isPossible = function() return true end,
 	}
 
 	register_badge "technician4"
@@ -27,6 +30,7 @@ function drl.register_awards()
 		name  = "Technician Platinum Badge",
 		desc  = "Discover {!all} advanced assemblies",
 		level = 4,
+		isPossible = function() return true end,
 	}
 
 	register_badge "technician5"
@@ -34,6 +38,7 @@ function drl.register_awards()
 		name  = "Technician Diamond Badge",
 		desc  = "Discover {!all} assemblies",
 		level = 5,
+		isPossible = function() return true end,
 	}
 
 	register_badge "armorer1"
@@ -41,6 +46,7 @@ function drl.register_awards()
 		name  = "Armorer Bronze Badge",
 		desc  = "Discover 10 exotics/uniques",
 		level = 1,
+		isPossible = function() return true end,
 	}
 
 	register_badge "armorer2"
@@ -48,6 +54,7 @@ function drl.register_awards()
 		name  = "Armorer Silver Badge",
 		desc  = "Discover 30 exotics/uniques",
 		level = 2,
+		isPossible = function() return true end,
 	}
 
 	register_badge "armorer3"
@@ -55,6 +62,7 @@ function drl.register_awards()
 		name  = "Armorer Gold Badge",
 		desc  = "Discover {!all} exotics/uniques",
 		level = 3,
+		isPossible = function() return true end,
 	}
 	
 	register_badge "armorer4"
@@ -62,6 +70,7 @@ function drl.register_awards()
 		name  = "Armorer Platinum Badge",
 		desc  = "Find {!1,000} exotics/uniques",
 		level = 4,
+		isPossible = function() return true end,
 	}
 
 	register_badge "armorer5"
@@ -69,6 +78,7 @@ function drl.register_awards()
 		name  = "Armorer Diamond Badge",
 		desc  = "Find 3 of {!each} exotic/unique",
 		level = 5,
+		isPossible = function() return true end,
 	}
 
 	register_badge "heroic1"
@@ -76,6 +86,7 @@ function drl.register_awards()
 		name  = "Heroic Bronze Badge",
 		desc  = "Receive 8 unique medals",
 		level = 1,
+		isPossible = function() return true end,
 	}
 
 	register_badge "heroic2"
@@ -83,6 +94,7 @@ function drl.register_awards()
 		name  = "Heroic Silver Badge",
 		desc  = "Receive 16 unique medals",
 		level = 2,
+		isPossible = function() return true end,
 	}
 
 	register_badge "heroic3"
@@ -90,6 +102,7 @@ function drl.register_awards()
 		name  = "Heroic Gold Badge",
 		desc  = "Receive 24 unique medals",
 		level = 3,
+		isPossible = function() return true end,
 	}
 
 	register_badge "heroic4"
@@ -97,6 +110,7 @@ function drl.register_awards()
 		name  = "Heroic Platinum Badge",
 		desc  = "Receive 32 unique medals",
 		level = 4,
+		isPossible = function() return true end,
 	}
 
 	register_badge "heroic5"
@@ -104,6 +118,7 @@ function drl.register_awards()
 		name  = "Heroic Diamond Badge",
 		desc  = "Receive {!all} medals",
 		level = 5,
+		isPossible = function() return true end,
 	}
 
 	-- medals
@@ -230,6 +245,10 @@ function drl.register_awards()
 		name  = "Explorer Pin",
 		desc  = "Visited all generated levels",
 		condition = function() return statistics.bonus_levels_count > 0 and statistics.bonus_levels_visited == statistics.bonus_levels_count end,
+		isPossible = function() return
+			(statistics.bonus_levels_visited == statistics.bonus_levels_count) or
+			(level.flags[ LF_BONUS ] and statistics.bonus_levels_visited + 1 == statistics.bonus_levels_count)
+		end,
 	}
 
 	register_medal "conqueror"
@@ -238,6 +257,10 @@ function drl.register_awards()
 		desc  = "Completed all generated levels",
 		removes = { "explorer" },
 		condition = function() return statistics.bonus_levels_count > 0 and statistics.bonus_levels_completed == statistics.bonus_levels_count end,
+		isPossible = function() return
+			(statistics.bonus_levels_completed == statistics.bonus_levels_count) or
+			(level.flags[ LF_BONUS ] and statistics.bonus_levels_completed + 1 == statistics.bonus_levels_count)
+		end,
 	}
 
 	register_medal "competn1"
@@ -307,6 +330,7 @@ function drl.register_awards()
 		desc  = "Won taking less than 500 damage",
 		winonly = true,
 		condition = function() return statistics.damage_taken < 500 end,
+		isPossible = function() return condition() end,
 	}
 
 	register_medal "untouchable2"
@@ -317,6 +341,7 @@ function drl.register_awards()
 		winonly = true,
 		removes = { "untouchable1" },
 		condition = function() return statistics.damage_taken < 200 end,
+		isPossible = function() return condition() end,
 	}
 
 	register_medal "untouchable3"
@@ -327,6 +352,7 @@ function drl.register_awards()
 		winonly = true,
 		removes = { "untouchable1", "untouchable2" },
 		condition = function() return statistics.damage_taken < 50 end,
+		isPossible = function() return condition() end,
 	}
 
 	register_medal "experience1"
@@ -368,7 +394,7 @@ function drl.register_awards()
 		name  = "UAC Bronze Badge",
 		desc  = "Win {!standard} game on any difficulty",
 		level = 1,
-		IsPossible = function() return CHALLENGE == "" end;
+		isPossible = function() return CHALLENGE == "" end;
 	}
 
 	register_badge "buac2"
@@ -376,7 +402,10 @@ function drl.register_awards()
 		name  = "UAC Silver Badge",
 		desc  = "Win {!standard} game on Hurt Me Plenty",
 		level = 2,
-		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_HARD end,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_HARD
+		end,
 	}
 
 	register_badge "buac3"
@@ -384,7 +413,10 @@ function drl.register_awards()
 		name  = "UAC Gold Badge",
 		desc  = "Win {!standard} game on Ultra-Violence",
 		level = 3,
-		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_VERYHARD end,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_VERYHARD
+		end,
 	}
 
 	register_badge "buac4"
@@ -392,7 +424,10 @@ function drl.register_awards()
 		name  = "UAC Platinum Badge",
 		desc  = "Win {!standard} game on N!",
 		level = 4,
-		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE end,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "buac5"
@@ -400,7 +435,11 @@ function drl.register_awards()
 		name  = "UAC Diamond Badge",
 		desc  = "Win {!standard} N! game under 20 min",
 		level = 5,
-		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE and statistics.real_time <= 20*60 end,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.real_time <= 20*60
+		end,
 	}
 
 	register_badge "buac6"
@@ -408,7 +447,11 @@ function drl.register_awards()
 		name  = "UAC Angelic Badge",
 		desc  = "Win {!standard} N! damageless",
 		level = 6,
-		IsPossible = function() return CHALLENGE == "" and DIFFICULTY >= DIFF_NIGHTMARE and statistics.damage_taken == 0 end,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.damage_taken == 0
+		end,
 	}
 
 -- VETERAN
@@ -418,7 +461,7 @@ function drl.register_awards()
 		name  = "Veteran Bronze Badge",
 		desc  = "Win game on any difficulty w/100% kills",
 		level = 1,
-		IsPossible = function() return statistics.levels_incomplete == 0 end,
+		isPossible = function() return statistics.levels_incomplete == 0 end,
 	}
 
 	register_badge "veteran2"
@@ -426,7 +469,10 @@ function drl.register_awards()
 		name  = "Veteran Silver Badge",
 		desc  = "Win game on Hurt Me Plenty w/100% kills",
 		level = 2,
-		IsPossible = function() return DIFFICULTY >= DIFF_HARD and (statistics.levels_incomplete == 0) end,
+		isPossible = function() return
+			DIFFICULTY >= DIFF_HARD and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_badge "veteran3"
@@ -434,7 +480,10 @@ function drl.register_awards()
 		name  = "Veteran Gold Badge",
 		desc  = "Win game on UV/100% kills",
 		level = 3,
-		IsPossible = function() return DIFFICULTY >= DIFF_VERYHARD and (statistics.levels_incomplete == 0) end,
+		isPossible = function() return
+			DIFFICULTY >= DIFF_VERYHARD and
+			(statistics.levels_incomplete == 0)
+		end,
 	}
 
 	register_badge "veteran4"
@@ -442,7 +491,7 @@ function drl.register_awards()
 		name  = "Veteran Platinum Badge",
 		desc  = "Fully win the game on UV",
 		level = 4,
-		IsPossible = function() return DIFFICULTY >= DIFF_VERYHARD end,
+		isPossible = function() return DIFFICULTY >= DIFF_VERYHARD end,
 	}
 
 	register_badge "veteran5"
@@ -450,7 +499,7 @@ function drl.register_awards()
 		name  = "Veteran Diamond Badge",
 		desc  = "Fully win the game on N!",
 		level = 5,
-		IsPossible = function() return DIFFICULTY >= DIFF_NIGHTMARE end,
+		isPossible = function() return DIFFICULTY >= DIFF_NIGHTMARE end,
 	}
 
 	register_badge "veteran6"
@@ -458,7 +507,10 @@ function drl.register_awards()
 		name  = "Veteran Angelic Badge",
 		desc  = "Fully win on N!/100%",
 		level = 6,
-		IsPossible = function() return DIFFICULTY >= DIFF_NIGHTMARE and (statistics.levels_incomplete == 0) end,
+		isPossible = function() return
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 -- STRONGMAN
@@ -468,6 +520,10 @@ function drl.register_awards()
 		name  = "Strongman Bronze Badge",
 		desc  = "Win {!standard} game using basic melee weapons",
 		level = 1,
+		isPossible = function() return
+			CHALLENGE == "" and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) + kills.get_type( "knife" ) + kills.get_type ( "chainsaw" ) == statistics.kills)
+		end,
 	}
 
 	register_badge "strongman2"
@@ -475,6 +531,10 @@ function drl.register_awards()
 		name  = "Strongman Silver Badge",
 		desc  = "Win {!standard} game using knives/fists",
 		level = 2,
+		isPossible = function() return
+			CHALLENGE == "" and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) + kills.get_type( "knife" ) == statistics.kills)
+		end,
 	}
 
 	register_badge "strongman3"
@@ -482,6 +542,11 @@ function drl.register_awards()
 		name  = "Strongman Gold Badge",
 		desc  = "Win {!standard} game using knives/fists HMP",
 		level = 3,
+		isPossible = function() return
+		    CHALLENGE == "" and
+			DIFFICULTY >= DIFF_HARD and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) + kills.get_type( "knife" ) == statistics.kills)
+		end,
 	}
 
 	register_badge "strongman4"
@@ -489,6 +554,11 @@ function drl.register_awards()
 		name  = "Strongman Platinum Badge",
 		desc  = "Win {!standard} game using only fists HMP",
 		level = 4,
+		isPossible = function() return
+		    CHALLENGE == "" and
+			DIFFICULTY >= DIFF_HARD and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) == statistics.kills)
+		end,
 	}
 
 	register_badge "strongman5"
@@ -496,6 +566,12 @@ function drl.register_awards()
 		name  = "Strongman Diamond Badge",
 		desc  = "Win {!standard} game fist-only HMP/100% kills",
 		level = 5,
+		isPossible = function() return
+		    CHALLENGE == "" and
+			DIFFICULTY >= DIFF_HARD and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) == statistics.kills) and
+			statistics.levels_incomplete == 0
+		end,
 	}
 
 	register_badge "strongman6"
@@ -503,6 +579,11 @@ function drl.register_awards()
 		name  = "Strongman Angelic Badge",
 		desc  = "Win {!standard} game fist-only N!/90% kills",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			(kills.get_type( "other" ) + kills.get_type( "melee" ) == statistics.kills)
+        end,
 	}
 
 -- SPEEDRUNNER
@@ -512,6 +593,10 @@ function drl.register_awards()
 		name  = "Speedrunner Bronze Badge",
 		desc  = "Win {!standard} game under 30 minutes",
 		level = 1,
+		isPossible = function() return
+			CHALLENGE == "" and
+			statistics.real_time < 30*60
+		end,
 	}
 
 	register_badge "speedrunner2"
@@ -519,6 +604,11 @@ function drl.register_awards()
 		name  = "Speedrunner Silver Badge",
 		desc  = "Win {!standard} HNTR game under 25 minutes",
 		level = 2,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_MEDIUM and
+			statistics.real_time < 25*60
+		end,
 	}
 
 	register_badge "speedrunner3"
@@ -526,6 +616,11 @@ function drl.register_awards()
 		name  = "Speedrunner Gold Badge",
 		desc  = "Win {!standard} HMP game under 20 minutes",
 		level = 3,
+		isPossible = function() return
+		    CHALLENGE == "" and
+			DIFFICULTY >= DIFF_HARD and
+			statistics.real_time < 20*60
+		end,
 	}
 --[[
 
@@ -549,6 +644,11 @@ function drl.register_awards()
 		name  = "Speedrunner Angelic Badge",
 		desc  = "Win {!standard} N! game under 4 minutes",
 		level = 6,
+		isPossible = function() return
+		    CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.real_time < 4*60
+		end,
 	}
 
 -- ELITE
@@ -558,6 +658,12 @@ function drl.register_awards()
 		name  = "Elite Platinum Badge",
 		desc  = "Win {!standard} UV game as Conqueror",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_VERYHARD and
+			((statistics.bonus_levels_count == statistics.bonus_levels_completed) or
+			 (statistics.bonus_levels_count == statistics.bonus_levels_completed + 1 and level.flags[ LF_BONSU ]))
+		end,
 	}
 
 	register_badge "elite5"
@@ -565,6 +671,10 @@ function drl.register_awards()
 		name  = "Elite Diamond Badge",
 		desc  = "Win {!standard} N!/90% kills",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE
+		end,
 	}
 
 	register_badge "elite6"
@@ -572,6 +682,12 @@ function drl.register_awards()
 		name  = "Elite Angelic Badge",
 		desc  = "Win {!standard} N!/100% as Conqueror",
 		level = 6,
+		isPossible = function() return
+		   CHALLENGE == "" and
+		   DIFFICULTY >= DIFF_NIGHTMARE and
+		   ((statistics.bonus_levels_count == statistics.bonus_levels_completed) or
+		    (statistics.bonus_levels_count == statistics.bonus_levels_completed + 1 and level.flags[ LF_BONUS ]))
+        end,
 	}
 
 -- Demonic
@@ -581,6 +697,12 @@ function drl.register_awards()
 		name  = "Demonic Platinum Badge",
 		desc  = "Win {!standard} N! as Explorer",
 		level = 4,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			((statistics.bonus_levels_count == statistics.bonus_levels_completed) or
+		    (statistics.bonus_levels_count == statistics.bonus_levels_completed + 1 and level.flags[ LF_BONUS ]))
+		end,
 	}
 
 	register_badge "demonic5"
@@ -588,6 +710,11 @@ function drl.register_awards()
 		name  = "Demonic Diamond Badge",
 		desc  = "Win {!standard} N! with Untouchable Medal",
 		level = 5,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			medals["untouchable2"].isPossible()
+		end,
 	}
 
 	register_badge "demonic6"
@@ -595,6 +722,11 @@ function drl.register_awards()
 		name  = "Demonic Angelic Badge",
 		desc  = "Win {!standard} N!/100% damageless",
 		level = 6,
+		isPossible = function() return
+			CHALLENGE == "" and
+			DIFFICULTY >= DIFF_NIGHTMARE and
+			statistics.damage_taken == 0
+		end,
 	}
 
 -- Common special level
