@@ -103,13 +103,15 @@ register_level "unholy_cathedral"
 			name  = "Longinus Gold Badge",
 			desc  = "Complete Unholy Cathedral",
 			level = 3,
-		}
+			--TODO: isPossible check should receive a signal when that level is no longer available
+			}
 
 		register_badge "death4"
 		{
 			name  = "Longinus Platinum Badge",
 			desc  = "Complete Unholy Cathedral on N!",
 			level = 4,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "death5"
@@ -117,6 +119,7 @@ register_level "unholy_cathedral"
 			name  = "Longinus Diamond Badge",
 			desc  = "Complete Unholy Cathedral on N! w/o Bru",
 			level = 5,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 	end,

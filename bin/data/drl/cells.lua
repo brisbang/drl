@@ -339,6 +339,9 @@ function drl.register_cells()
 
 		OnExit = function(c)
 			player:exit( level.special_exit )
+			for l in player.episode[level.depth].levels_not_generated do
+				statistics.not_generated.insert( l );
+			end
 		end,
 
 		OnDescribe = function(c)

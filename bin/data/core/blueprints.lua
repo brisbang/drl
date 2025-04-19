@@ -78,13 +78,14 @@ core.register_blueprint "klass"
 
 core.register_blueprint "medal"
 {
-	id        = { true,  core.TSTRING },
-	name      = { true,  core.TSTRING },
-	desc      = { true,  core.TSTRING },
-	winonly   = { false, core.TBOOL,   false },
-	hidden    = { false, core.TBOOL,   false },
-	removes   = { false, core.TARRAY( core.TIDIN("medals") ) },
-	condition = { false, core.TFUNC },
+	id         = { true,  core.TSTRING },
+	name       = { true,  core.TSTRING },
+	desc       = { true,  core.TSTRING },
+	winonly    = { false, core.TBOOL,   false },
+	hidden     = { false, core.TBOOL,   false },
+	removes    = { false, core.TARRAY( core.TIDIN("medals") ) },
+	condition  = { false, core.TFUNC },
+	IsPossible = { false, core.TFUNC },
 }
 
 core.register_blueprint "badge"
@@ -94,7 +95,7 @@ core.register_blueprint "badge"
 	desc      = { true,  core.TSTRING },
 	level     = { true,  core.TNUMBER },
 
-	isPossible = { false, core.TFUNC },
+	IsPossible = { false, core.TFUNC },
 }
 
 core.register_blueprint "award_level"

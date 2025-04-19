@@ -18,6 +18,7 @@ register_level "the_vaults"
 			name  = "Scavenger Bronze Badge",
 			desc  = "Find The Vaults",
 			level = 1,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "vaults2"
@@ -25,6 +26,7 @@ register_level "the_vaults"
 			name  = "Scavenger Silver Badge",
 			desc  = "Scavenge The Vaults",
 			level = 2,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "vaults3"
@@ -32,6 +34,7 @@ register_level "the_vaults"
 			name  = "Scavenger Gold Badge",
 			desc  = "Clear The Vaults",
 			level = 3,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "vaults4"
@@ -39,6 +42,7 @@ register_level "the_vaults"
 			name  = "Scavenger Platinum Badge",
 			desc  = "Clear The Vaults by luck",
 			level = 4,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "vaults5"
@@ -46,6 +50,7 @@ register_level "the_vaults"
 			name  = "Scavenger Diamond Badge",
 			desc  = "Clear The Vaults by luck on UV+",
 			level = 5,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 		
 	end,

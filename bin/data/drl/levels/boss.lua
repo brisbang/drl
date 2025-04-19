@@ -5,6 +5,12 @@ register_badge "hellgate1"
 	name  = "Gatekeeper Bronze Badge",
 	desc  = "Clear out the Anomaly",
 	level = 1,
+	IsPossible = function() return
+		CHALLENGE ~= "challenge_a100" and
+		CHALLENGE ~= "challenge_aooc" and
+--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+		player.depth < 8
+	end,
 }
 
 register_badge "hellgate2"
@@ -12,6 +18,12 @@ register_badge "hellgate2"
 	name  = "Gatekeeper Silver Badge",
 	desc  = "Clear the Anomaly w/o taking damage",
 	level = 2,
+	IsPossible = function() return
+		CHALLENGE ~= "challenge_a100" and
+		CHALLENGE ~= "challenge_aooc" and
+--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+		player.depth < 8
+	end,
 }
 
 register_badge "hellgate3"
@@ -19,6 +31,7 @@ register_badge "hellgate3"
 	name  = "Gatekeeper Gold Badge",
 	desc  = "Clear Babel on HNTR w/o taking damage",
 	level = 3,
+	--HOW DO WE MANAGE CHALLENGE RUNS AND THE LEVEL COUNT
 }
 
 register_badge "hellgate4"

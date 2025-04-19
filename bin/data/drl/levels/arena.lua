@@ -57,10 +57,11 @@ register_level "hells_arena"
 			name  = "Arena Bronze Badge",
 			desc  = "Complete Hell's Arena",
 			level = 1,
-			isPossible = function() return
+			IsPossible = function() return
 				CHALLENGE ~= "challenge_a100" and
 				CHALLENGE ~= "challenge_aooc" and
-				--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+				--TODO: Shouldn't have a depth listed.
+				--Instead it should receive a signal when that level is no longer available
 				(player.depth < 3 or level.id == "hells_arena")
 			end,
 		}
@@ -70,11 +71,12 @@ register_level "hells_arena"
 			name  = "Arena Silver Badge",
 			desc  = "Complete Hell's Arena on UV",
 			level = 2,
-			isPossible = function() return
+			IsPossible = function() return
 				DIFFICULTY == DIFF_VERYHARD and
 				CHALLENGE ~= "challenge_a100" and
 				CHALLENGE ~= "challenge_aooc" and
-				--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+				--TODO: Shouldn't have a depth listed.
+				--Instead it should receive a signal when that level is no longer available
 				(player.depth < 3 or level.id == "hells_arena")
 			end,
 		}
@@ -84,10 +86,11 @@ register_level "hells_arena"
 			name  = "Arena Gold Badge",
 			desc  = "Complete Hell's Arena on AoMr on UV",
 			level = 3,
-			isPossible = function() return
+			IsPossible = function() return
 				DIFFICULTY == DIFF_VERYHARD and
 				CHALLENGE == "challenge_aomr" and
-				--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+				--TODO: Shouldn't have a depth listed.
+				--Instead it should receive a signal when that level is no longer available
 				(player.depth < 3 or level.id == "hells_arena")
 			end,
 		}
@@ -97,11 +100,12 @@ register_level "hells_arena"
 			name  = "Arena Platinum Badge",
 			desc  = "Complete Hell's Arena on Nightmare!",
 			level = 4,
-			isPossible = function() return
+			IsPossible = function() return
 				DIFFICULTY == DIFF_NIGHTMARE and
 				CHALLENGE ~= "challenge_a100" and
 				CHALLENGE ~= "challenge_aooc" and
-				--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+				--TODO: Shouldn't have a depth listed.
+				--Instead it should receive a signal when that level is no longer available
 				(player.depth < 3 or level.id == "hells_arena")
 			end,
 		}
@@ -111,10 +115,11 @@ register_level "hells_arena"
 			name  = "Arena Diamond Badge",
 			desc  = "Complete Hell's Arena on AoB on N!",
 			level = 5,
-			isPossible = function() return
+			IsPossible = function() return
 				DIFFICULTY == DIFF_NIGHTMARE and
 				CHALLENGE == "challenge_aob" and
-				--Shouldn't have a depth listed. Instead should query a list of special levels unavailable.
+				--TODO: Shouldn't have a depth listed.
+				--Instead it should receive a signal when that level is no longer available
 				(player.depth < 3 or level.id == "hells_arena")
 			end,
 		}
