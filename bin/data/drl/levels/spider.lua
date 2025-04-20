@@ -15,6 +15,7 @@ register_level "spiders_lair"
 			name  = "Arachno Bronze Badge",
 			desc  = "Clear Spider's Lair",
 			level = 1,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_badge "arachno2"
@@ -22,6 +23,7 @@ register_level "spiders_lair"
 			name  = "Arachno Silver Badge",
 			desc  = "Clear Spider's Lair on AoD",
 			level = 2,
+			--TODO: isPossible check should receive a signal when that level is no longer available
 		}
 
 		register_medal "everyspider"
