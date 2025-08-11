@@ -127,6 +127,17 @@ Because the lua code is packaged into the wad file, inline debugging is more dif
 #### Lazarus notes
 The Lazarus installation is preferred for VS Code (compared with the simpler fpc installation) because using fpc in Windows triggers an error when the debugger is used.
 
+#### Modules
+There is a facility to include your own modules, with a sample named 'Classic'.
+
+To compile the classic module
+1. Run Task/Build classic module
+
+To compile your own module
+1. Copy the structure of the classic module
+2. Add an additional task into tasks.json to compile your module, based off the task "Build classic module"
+3. Run your task
+
 ### The Lazarus IDE
 #### Configuration
 1. Download lua 5.1 (e.g. 5.1.5) from https://sourceforge.net/projects/luabinaries/files/5.1.5/Tools%20Executables/. Unzip it

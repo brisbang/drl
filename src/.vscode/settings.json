@@ -10,6 +10,9 @@
     "drlExe": "drl.exe",
     "makewadMainFile": "makewad.pas",
     "makewadExe": "makewad.exe",
+    "drlwadMainFile": "drlwad.pas",
+    "drlwadExe": "drlwad.exe",
     "tmpPath": "tmp",
-    "luaPath": "c:\\Program Files\\lua5.1\\lua5.1.exe"
+    "luaPath": "c:\\Program Files\\lua5.1",
+    "luaExe": "lua5.1.exe"
 }

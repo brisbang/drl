@@ -13,6 +13,7 @@
             "dependsOrder": "sequence",
             "dependsOn": [
                  "Build makewad.exe (debug)",
+                 "Build drlwad.exe (debug)",
                  "Build drl.wad, core.wad",
                  "Syntax Check (debug)",
                  "Build drl.exe (debug)",
@@ -296,6 +297,57 @@
                 }
             }
        },
+        {
+            "label": "Build drlwad.exe (debug)",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+            },
+            "command": "${config:fpcPath}",
+            "args": [ //This command definition matches the Lazarus drlwad.lpi build execution
+                "-Px86_64", //Set target CPU to be x86_64
+                "-Mobjfpc", //Switch on some Delphi extensions
+                "-Scgi", //Support C-style operators, label and goto commands, INLINE
+                "-Cirot", //Generate I/O checking code, Range checking code, Integer overflow checking code, Stack checking code
+                "-O1", //Level 1 optimizations (quick and debugger-friendly)
+                "-gw3", //Dwarf debugging info (version 3)
+                "-gl", //Lineinfo debugging
+                "-l", //Print a line stating which program this is and its version
+                "-vewnhibq", //Be verbose, showing errors, warnings, notes, hints, informational messages, all procedural declarations if an overload occurs, message numbers
+                "-Fu${config:valkyrieSourcePath}\\libs", //Include unit search path
+                "-Fu${config:valkyrieSourcePath}\\src", //Include unit search path
+                "-Fu${config:lazarusPath}\\lcl\\units\\x86_64-win64\\win32", //Include unit search path
+                "-Fu${config:lazarusPath}\\lcl\\units\\x86_64-win64", //Include unit search path
+                "-Fu${config:lazarusPath}\\components\\freetype\\lib\\x86_64-win64", //Include unit search path
+                "-Fu${config:lazarusPath}\\components\\lazutils\\lib\\x86_64-win64", //Include unit search path
+                "-Fu${config:lazarusPath}\\packager\\units\\x86_64-win64", //Include unit search path
+                "-FU${config:drlBasePath}\\${config:tmpPath}", //Write units to this folder
+                "-o${config:drlBasePath}\\${config:debugPath}\\${config:drlwadExe}", //Executable location
+                "-dLCL", //Enables conditional compilation of this symbol
+                "-dLCLwin32", //Enables conditional compilation of this symbol
+                "${config:drlwadMainFile}" //The compilation file
+            ],
+            "presentation": {
+                "focus": true
+            },
+            "problemMatcher": {
+                "owner": "objectpascal",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "kind": "location",
+                    "regexp": "^(.*)\\((\\d.*),(\\d.*)\\) (Warning|Error|Fatal): (.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5,
+                    "loop": true
+                }
+            }
+       },
        {
             "label": "Build drl.wad, core.wad",
             "type": "shell",
@@ -312,12 +364,34 @@
             "problemMatcher": []
         },
         {
+            "label": "Build classic module",
+            "type": "shell",
+            "options": {
+                "cwd": "${config:drlBasePath}\\${config:debugPath}",
+                "env": {
+                    "PATH": "${env:Path};${config:luaPath}"
+                }
+            },
+            "group": {
+                "kind": "build",
+            },
+            "command": "./${config:drlwadExe}",
+            "args": [
+                "classic"
+            ],
+            "presentation": {
+                "focus": true
+            },
+            "problemMatcher": []
+
+        },
+        {
             "label": "Build the release package (lq)",
             "type": "shell",
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "lq"
@@ -333,7 +407,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "hq"
@@ -349,7 +423,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "install"
@@ -365,7 +439,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "installlq"
@@ -381,7 +455,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "installhq"
@@ -397,7 +471,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "all"
@@ -413,7 +487,7 @@
             "options": {
                 "cwd": "${config:drlBasePath}"
             },
-            "command": "${config:luaPath}",
+            "command": "${config:luaPath}\\${config:luaExe}",
             "args": [
                 "makefile.lua",
                 "alllq"
