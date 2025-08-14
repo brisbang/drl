@@ -99,7 +99,7 @@ var ChallengeType : array[1..4] of TMainMenuEntry =
    Allow : True; Extra : 'Reach {ySergeant Major} rank to unlock!'; ID : ''; NID : 0; Req : 0;
 ),(
    Name : 'Custom Challenge';
-   Desc : 'Play one of many custom DRL challenge levels and episodes. Download new ones from the {yCustom game/Download Mods} option in the main menu.';
+   Desc : 'Play one of many custom DRL challenge levels and episodes.';
    Allow : True; Extra : ''; ID : ''; NID : 0; Req : 0;
 ));
 
@@ -108,7 +108,7 @@ const MAINMENU_ID = 'mainmenu';
 const CTYPE_ANGEL  = 1;
       CTYPE_DANGEL = 2;
       CTYPE_AANGEL = 3;
-//      CTYPE_CUSTOM = 4;
+      CTYPE_CUSTOM = 4;
 
       CTYPE_SECOND = 10;
 
@@ -804,12 +804,14 @@ begin
 
   iSkill := HOF.GetRank('skill');
 
-  ChallengeType[1].Allow := (iSkill > 0) or (GodMode) or (Setting_UnlockAll);
-  ChallengeType[2].Allow := (iSkill > 3) or (GodMode) or (Setting_UnlockAll);
-  ChallengeType[3].Allow := (iSkill > 4) or (GodMode) or (Setting_UnlockAll);
-  FArrayCType.Push( ChallengeType[1] );
-  FArrayCType.Push( ChallengeType[2] );
-  FArrayCType.Push( ChallengeType[3] );
+  ChallengeType[CTYPE_ANGEL].Allow := (iSkill > 0) or (GodMode) or (Setting_UnlockAll);
+  ChallengeType[CTYPE_DANGEL].Allow := (iSkill > 3) or (GodMode) or (Setting_UnlockAll);
+  ChallengeType[CTYPE_AANGEL].Allow := (iSkill > 4) or (GodMode) or (Setting_UnlockAll);
+  ChallengeType[CTYPE_CUSTOM].Allow := (GodMode);
+  FArrayCType.Push( ChallengeType[CTYPE_ANGEL] );
+  FArrayCType.Push( ChallengeType[CTYPE_DANGEL] );
+  FArrayCType.Push( ChallengeType[CTYPE_AANGEL] );
+  FArrayCType.Push( ChallengeType[CTYPE_CUSTOM] );
 
   for iTable in LuaSystem.ITables('diff') do
   with iTable do
@@ -893,7 +895,9 @@ begin
           Inc( iChoices );
         end;
     end;
-//        CTYPE_CUSTOM = 4;
+    CTYPE_CUSTOM : begin
+      
+    end;
     CTYPE_SECOND : begin
       FTitleChal := 'Choose your Secondary Challenge';
       with LuaSystem.GetTable([ 'chal', FResult.Challenge, 'secondary' ]) do

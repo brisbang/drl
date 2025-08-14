@@ -4,27 +4,27 @@ When you first start a game of DRL, you're presented with a menu screen
 with a few different options:
 
 {YNew game} will, well, start a new game!
-{YChallenge game} is initially locked, and becomes unlocked after you reach
-Corporal rank (need to survive 10 levels for it). Challenge games force you
-to play the game a certain way (e.g. using only melee), and you can raise
-your player rank in DRL by completing them. As your rank goes higher, 
-more challenges will be made available to you.
-{YCustom game} brings up a selection screen where you can view and load
-modules. Modules are player-created levels, episodes, or entirely new games
-that bring a completely new experience to the DRL engine.
+{YChallenge game} is initially locked, and becomes unlocked after you complete
+a challenge. Challenge games force you to play the game a certain way (e.g.
+using only melee), and you can raise your player rank in DRL by completing
+them. As your rank goes higher, more challenges will be made available to
+you. This also includes the ability to view and load modules. Modules are
+player-created levels, episodes, or entirely new games that bring a
+completely new experience to the DRL engine.
 {YShow highscores} displays the highscore list, not surprisingly.
 {YShow player} displays your player statistics, which include your player 
 rank, number of kills, and number of wins. It has several screens which
 can be scrolled with the arrow keys.
 {YHelp} displays the help screen, which contains the info you are
 currently reading.
+{YSettings} shows configurable options to change your playing experience.
 
 For now, select {YNew game} with the arrow keys and press ENTER to start
 your very first game of DRL!
 
 Before you start your game, you have to make a few decisions. The first is
 the difficulty level. At the beginning, only three difficulty levels are
-available: "I'm too young to die", "Hey, Not Too Rough", and "Hurt Me
+available: "I'm Too Young To Die", "Hey, Not Too Rough", and "Hurt Me
 Plenty". At higher difficulties, more monsters appear and tougher monsters
 appear earlier. "Ultra-Violence" and "Nightmare!" difficulties are unlocked
 as your player rank rises. At Nightmare! difficulty, only the most insane

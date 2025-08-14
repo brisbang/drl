@@ -47,20 +47,20 @@ When you first start a game of DRL, you're presented with a menu screen
 with a few different options:
 
 New game will, well, start a new game!
-Challenge game is initially locked, and becomes unlocked after you reach
-Corporal rank (need to survive 10 levels for it). Challenge games force you
-to play the game a certain way (e.g. using only melee), and you can raise
-your player rank in DRL by completing them. As your rank goes higher, 
-more challenges will be made available to you.
-Custom game brings up a selection screen where you can view and load
-modules. Modules are player-created levels, episodes, or entirely new games
-that bring a completely new experience to the DRL engine.
+Challenge game is initially locked, and becomes unlocked after you complete
+a challenge. Challenge games force you to play the game a certain way (e.g.
+using only melee), and you can raise your player rank in DRL by completing
+them. As your rank goes higher, more challenges will be made available to
+you. This also includes the ability to view and load modules. Modules are
+player-created levels, episodes, or entirely new games that bring a
+completely new experience to the DRL engine.
 Show highscores displays the highscore list, not surprisingly.
 Show player displays your player statistics, which include your player 
 rank, number of kills, and number of wins. It has several screens which
 can be scrolled with the arrow keys.
 Help displays the help screen, which contains the info you are
 currently reading.
+Settings shows configurable options to change your playing experience.
 
 For now, select New game with the arrow keys and press ENTER to start
 your very first game of DRL!
