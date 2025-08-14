@@ -807,7 +807,7 @@ begin
   ChallengeType[CTYPE_ANGEL].Allow := (iSkill > 0) or (GodMode) or (Setting_UnlockAll);
   ChallengeType[CTYPE_DANGEL].Allow := (iSkill > 3) or (GodMode) or (Setting_UnlockAll);
   ChallengeType[CTYPE_AANGEL].Allow := (iSkill > 4) or (GodMode) or (Setting_UnlockAll);
-  ChallengeType[CTYPE_CUSTOM].Allow := (GodMode);
+  ChallengeType[CTYPE_CUSTOM].Allow := ModdedGame;
   FArrayCType.Push( ChallengeType[CTYPE_ANGEL] );
   FArrayCType.Push( ChallengeType[CTYPE_DANGEL] );
   FArrayCType.Push( ChallengeType[CTYPE_AANGEL] );
