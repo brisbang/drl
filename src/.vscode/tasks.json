@@ -23,7 +23,7 @@
         {
             "label": "Update libraries (debug)",
             "type": "shell",
-            "command": "xcopy /Y /D ${config:drlBasePath}\\${config:libPath}\\* ${config:drlBasePath}\\${config:debugPath}",
+            "command": "xcopy /Y /D ${config:drlBasePath}\\${config:libPath}\\* ${config:drlBasePath}\\${config:debugPath} | findstr /V ^0",
         },
         {
             "label": "Build drl.exe (debug)",
@@ -98,7 +98,7 @@
         {
             "label": "Update libraries (release)",
             "type": "shell",
-            "command": "xcopy /Y /D ${config:drlBasePath}\\${config:libPath}\\* ${config:drlBasePath}\\${config:releasePath}",
+            "command": "xcopy /Y /D ${config:drlBasePath}\\${config:libPath}\\* ${config:drlBasePath}\\${config:releasePath} | findstr /V ^0",
         },
         {
             "label": "Build drl.exe (release)",
